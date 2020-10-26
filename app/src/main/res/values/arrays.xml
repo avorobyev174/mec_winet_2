@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="addresses_array">
+        <item>Доменщиков 5</item>
+        <item>Доменщиков 5/1</item>
+    </string-array>
+    <string-array name="winet_type_array">
+        <item>301</item>
+        <item>302</item>
+        <item>303</item>
+        <item>401</item>
+        <item>402</item>
+        <item>403</item>
+    </string-array>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Wi-Net</string>
+    <string name="toolbar_title">мэк wi-net 1</string>
+    <string name="houses_list">Список домов:</string>
+    <string name="sections_list">Список подьездов:</string>
+    <string name="add_address_button">Добавить дом</string>
+    <string name="add_section_button">Добавить подьезд</string>
+    <string name="add_floor_button">Добавить этаж</string>
+    <string name="add_vestibule_button">Добавить тамбур</string>
+    <string name="add_winet_button">Добавить Wi-Net</string>
+    <string name="save_winet_info_button">Сохранить</string>
+    <string name="ser_number_winet">Серийный номер</string>
+    <string name="comment_winet">Комментарий</string>
+</resources>

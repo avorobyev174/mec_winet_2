@@ -56,7 +56,11 @@ public class Winet implements Serializable {
         return id;
     }
 
-    public Winet(int id, String serNumber, String type, Vestibule vestibule) {
+    public String getTypeAndSerNumber() {
+        return getType() + "    " + getSerNumber();
+    }
+
+    public Winet(int id, String type, String serNumber, Vestibule vestibule) {
         this.id = id;
         this.serNumber = serNumber;
         this.type = type;

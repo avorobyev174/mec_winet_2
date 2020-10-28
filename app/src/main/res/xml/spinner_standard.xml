@@ -3,7 +3,7 @@
     android:id="@+id/standard_spinner_format"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="20sp"
+    android:textSize="24sp"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:gravity="center_vertical"
     android:paddingLeft="10dp"

@@ -56,7 +56,7 @@ public class HouseActivity extends AppCompatActivity {
 
         infoBar.setText(R.string.houses_list);
 
-        adapter = new HouseAdapter(this, R.layout.house_list_item_view, houseList, getLayoutInflater());
+        adapter = new HouseAdapter(this, R.layout.simple_list_item_view, houseList, getLayoutInflater());
         housesListView.setAdapter(adapter);
 
         initOnClick();

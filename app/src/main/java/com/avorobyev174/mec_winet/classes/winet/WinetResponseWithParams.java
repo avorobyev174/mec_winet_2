@@ -18,7 +18,6 @@ public class WinetResponseWithParams {
     @Expose
     private String sql;
 
-
     @SerializedName("params")
     @Expose
     private WinetParams params;

@@ -40,7 +40,7 @@ public class HouseAdapter extends ArrayAdapter<House> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         House house = houseList.get(position);
-        convertView = inflater.inflate(R.layout.house_list_item_view, null, false);
+        convertView = inflater.inflate(R.layout.simple_list_item_view, null, false);
 
         final ViewHolder viewHolder = new ViewHolder(convertView, house);
         convertView.setTag(viewHolder);
@@ -57,8 +57,8 @@ public class HouseAdapter extends ArrayAdapter<House> {
         private ViewHolder(View rootView, House house) {
             this.house = house;
 
-            houseTitle = rootView.findViewById(R.id.houses_list_item_text);
-            deleteHouseButton = rootView.findViewById(R.id.deleteHouseButton);
+            houseTitle = rootView.findViewById(R.id.list_item_title);
+            deleteHouseButton = rootView.findViewById(R.id.deleteItemButton);
 
             houseTitle.setText(house.getFullStreetName());
 

@@ -42,7 +42,7 @@ public class VestibuleAdapter extends ArrayAdapter<Vestibule> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Vestibule vestibule = vestibuleList.get(position);
-        convertView = inflater.inflate(R.layout.vestibule_list_item_view, null, false);
+        convertView = inflater.inflate(R.layout.simple_list_item_view, null, false);
         final ViewHolder viewHolder = new ViewHolder(convertView, vestibule);
         convertView.setTag(viewHolder);
 
@@ -57,8 +57,8 @@ public class VestibuleAdapter extends ArrayAdapter<Vestibule> {
         private ViewHolder(View rootView, Vestibule vestibule) {
             this.vestibule = vestibule;
 
-            vestibuleTitle = rootView.findViewById(R.id.vestibules_list_item_text);
-            deleteVestibuleButton = rootView.findViewById(R.id.deleteVestibuleButton);
+            vestibuleTitle = rootView.findViewById(R.id.list_item_title);
+            deleteVestibuleButton = rootView.findViewById(R.id.deleteItemButton);
 
             vestibuleTitle.setText(vestibule.getFullNumber());
 

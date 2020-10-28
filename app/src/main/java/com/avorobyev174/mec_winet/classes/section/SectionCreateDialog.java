@@ -43,12 +43,13 @@ public class SectionCreateDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.section_create_dialog_activity);
+        setContentView(R.layout.create_dialog_activity);
 
-        createSectionButton = findViewById(R.id.createSectionButton);
-        cancelCreateSectionButton = findViewById(R.id.cancelCreateSectionButton);
+        createSectionButton = findViewById(R.id.confirmCreateButton);
+        cancelCreateSectionButton = findViewById(R.id.cancelCreateButton);
 
-        sectionNumber = findViewById(R.id.sectionNumber);
+        sectionNumber = findViewById(R.id.objectNumber);
+        sectionNumber.setHint("Номер подьезда");
 
         cancelCreateSectionButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 
 public interface VestibuleApi {
     @GET("vestibule/?485kf9056kjwj3=04jf75h@hjfks")
-    Call<VestibuleInfoResponse> getVestibules(@Query("section_id") int sectionId);
+    Call<VestibuleInfoResponse> getVestibules(@Query("floor_id") int floorId);
 
     @POST("vestibule/?485kf9056kjwj3=04jf75h@hjfks")
     Call<VestibuleResponseWithParams> createVestibule(@Query("vestibule_number") String vestibuleNumber, @Query("floor_id") int floorId);

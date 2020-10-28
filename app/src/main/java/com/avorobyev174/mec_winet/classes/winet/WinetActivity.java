@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,12 +18,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
-import com.avorobyev174.mec_winet.WinetInfoActivity;
+import com.avorobyev174.mec_winet.classes.floor.Floor;
+import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
+import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleCreateDialog;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleInfo;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleInfoResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class WinetActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Winet winet = winetList.get(i);
-                Intent intent = new Intent(WinetActivity.this, WinetInfoActivity.class);
+                Intent intent = new Intent(WinetActivity.this, WinetDataActivity.class);
                 intent.putExtra(Winet.class.getSimpleName(), winet);
                 startActivity(intent);
             }
@@ -112,10 +112,10 @@ public class WinetActivity extends AppCompatActivity {
         messages.enqueue(new Callback<WinetInfoResponse>() {
             @Override
             public void onResponse(Call<WinetInfoResponse> call, Response<WinetInfoResponse> response) {
-                Log.e("get vest response", "success = " + response.body().getSuccess());
+                Log.e("get winet response", "success = " + response.body().getSuccess());
 
                 for (WinetInfo winetInfo : response.body().getResult()) {
-                    winetList.add(new Winet(winetInfo.getId(), winetInfo.getSerNumber(), winetInfo.getType(), vestibule));
+                    winetList.add(new Winet(winetInfo.getId(), winetInfo.getType(), winetInfo.getSerNumber(), vestibule));
                 }
 
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
@@ -135,5 +135,21 @@ public class WinetActivity extends AppCompatActivity {
     public void createNewWinet(View view) {
         WinetCreateDialog winetCreateDialog = new WinetCreateDialog(this, adapter,  winetList, vestibule);
         winetCreateDialog.show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    Log.e("back","back");
+                    Intent intent = new Intent(WinetActivity.this, VestibuleActivity.class);
+                    intent.putExtra(Floor.class.getSimpleName(), vestibule.getFloor());
+                    startActivity(intent);
+                    return true;
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

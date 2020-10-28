@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:ems="10"
-        android:hint="Номер этажа"
+        android:hint="Номер обьекта"
         android:inputType="number" />
 
     <LinearLayout

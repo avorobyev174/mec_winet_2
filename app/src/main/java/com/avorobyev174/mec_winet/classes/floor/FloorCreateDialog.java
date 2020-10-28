@@ -43,12 +43,13 @@ public class FloorCreateDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.floor_create_dialog_activity);
+        setContentView(R.layout.create_dialog_activity);
 
-        createFloorButton = findViewById(R.id.createFloorButton);
-        cancelCreateFloorButton = findViewById(R.id.cancelCreateFloorButton);
+        createFloorButton = findViewById(R.id.confirmCreateButton);
+        cancelCreateFloorButton = findViewById(R.id.cancelCreateButton);
 
-        floorNumber = findViewById(R.id.floorNumber);
+        floorNumber = findViewById(R.id.objectNumber);
+        floorNumber.setHint("Номер этажа");
 
         cancelCreateFloorButton.setOnClickListener(new View.OnClickListener() {
             @Override

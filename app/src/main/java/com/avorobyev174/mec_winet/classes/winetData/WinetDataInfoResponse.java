@@ -1,10 +1,12 @@
-package com.avorobyev174.mec_winet.classes.section;
+package com.avorobyev174.mec_winet.classes.winetData;
 
-import com.avorobyev174.mec_winet.classes.house.HouseParams;
+import com.avorobyev174.mec_winet.classes.winet.WinetInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SectionResponseWithParams {
+import java.util.List;
+
+public class WinetDataInfoResponse {
 
     @SerializedName("success")
     @Expose
@@ -12,23 +14,11 @@ public class SectionResponseWithParams {
 
     @SerializedName("result")
     @Expose
-    private String result = null;
+    private List<WinetInfo> winetDataInfo = null;
 
     @SerializedName("sql")
     @Expose
     private String sql;
-
-    @SerializedName("params")
-    @Expose
-    private SectionParams params;
-
-    public SectionParams getParams() {
-        return params;
-    }
-
-    public void setParams(SectionParams params) {
-        this.params = params;
-    }
 
     public Boolean getSuccess() {
         return success;
@@ -38,12 +28,12 @@ public class SectionResponseWithParams {
         this.success = success;
     }
 
-    public String getResult() {
-        return result;
+    public List<WinetInfo> getResult() {
+        return winetDataInfo;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setWinetDataInfo(List<WinetInfo> winetDataInfo) {
+        this.winetDataInfo = winetDataInfo;
     }
 
     public String getSql() {

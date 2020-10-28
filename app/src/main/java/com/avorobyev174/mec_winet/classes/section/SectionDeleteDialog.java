@@ -25,7 +25,7 @@ import retrofit2.Response;
 public class SectionDeleteDialog extends Dialog {
     public Activity activity;
     public Button deleteSectionButton, cancelDeleteSectionButton;
-    public TextView title;
+    public TextView sectionDeleteTitle;
     private Section section;
     private SectionAdapter sectionAdapter;
     private List<Section> sectionList;
@@ -43,13 +43,13 @@ public class SectionDeleteDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.section_delete_dialog_activity);
+        setContentView(R.layout.delete_dialog_activity);
 
-        deleteSectionButton = findViewById(R.id.deleteSectionDialogButton);
-        cancelDeleteSectionButton = findViewById(R.id.cancelDeleteSectionDialogButton);
+        deleteSectionButton = findViewById(R.id.confirmDeleteDialogButton);
+        cancelDeleteSectionButton = findViewById(R.id.cancelDeleteDialogButton);
 
-        title = findViewById(R.id.deleteSectionTitle);
-        title.setText("Вы хотите удалить подьезд \"" + section.getNumber() + "\" ?");
+        sectionDeleteTitle = findViewById(R.id.deleteDialogTitle);
+        sectionDeleteTitle.setText("Вы хотите удалить подьезд \"" + section.getNumber() + "\" ?");
 
         cancelDeleteSectionButton.setOnClickListener(new View.OnClickListener() {
             @Override

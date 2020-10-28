@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.api.SimpleResponse;
-import com.avorobyev174.mec_winet.classes.section.Section;
-import com.avorobyev174.mec_winet.classes.section.SectionAdapter;
 
 import java.util.List;
 
@@ -27,7 +25,7 @@ import retrofit2.Response;
 public class FloorDeleteDialog extends Dialog {
     public Activity activity;
     public Button deleteFloorButton, cancelDeleteFloorButton;
-    public TextView title;
+    public TextView floorDeleteTitle;
     private Floor floor;
     private FloorAdapter floorAdapter;
     private List<Floor> floorList;
@@ -45,13 +43,13 @@ public class FloorDeleteDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.floor_delete_dialog_activity);
+        setContentView(R.layout.delete_dialog_activity);
 
-        deleteFloorButton = findViewById(R.id.deleteFloorDialogButton);
-        cancelDeleteFloorButton = findViewById(R.id.cancelDeleteFloorDialogButton);
+        deleteFloorButton = findViewById(R.id.confirmDeleteDialogButton);
+        cancelDeleteFloorButton = findViewById(R.id.cancelDeleteDialogButton);
 
-        title = findViewById(R.id.deleteFloorTitle);
-        title.setText("Вы хотите удалить этаж \"" + floor.getNumber() + "\" ?");
+        floorDeleteTitle = findViewById(R.id.deleteDialogTitle);
+        floorDeleteTitle.setText("Вы хотите удалить этаж \"" + floor.getNumber() + "\" ?");
 
         cancelDeleteFloorButton.setOnClickListener(new View.OnClickListener() {
             @Override

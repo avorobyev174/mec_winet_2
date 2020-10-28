@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,10 +18,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.section.SectionActivity;
+import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.section.Section;
+import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
+import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +65,7 @@ public class FloorActivity extends AppCompatActivity {
 
         infoBar.setText(section.getHouse().getFullStreetName() + " → " + section.getShortNumber());
 
-        adapter = new FloorAdapter(this, R.layout.floor_list_item_view, floorList, getLayoutInflater());
+        adapter = new FloorAdapter(this, R.layout.simple_list_item_view, floorList, getLayoutInflater());
         floorListView.setAdapter(adapter);
 
         initOnClick();
@@ -112,9 +117,6 @@ public class FloorActivity extends AppCompatActivity {
                 Log.e("get floor response", "success = " + response.body().getSuccess());
 
                 for (FloorInfo floorInfo : response.body().getResult()) {
-//                    Log.e("response", "section number = " + sectionInfo.getSectionNumber());
-//                    Log.e("response", "section id = " + sectionInfo.getId());
-//                    Log.e("response", "section house id= " + sectionInfo.getHouseId());
                     floorList.add(new Floor(floorInfo.getId(), Integer.parseInt(floorInfo.getFloorNumber()), section));
                 }
 
@@ -135,5 +137,21 @@ public class FloorActivity extends AppCompatActivity {
     public void createNewFloor(View view) {
         FloorCreateDialog floorCreateDialog = new FloorCreateDialog(this, adapter,  floorList, section);
         floorCreateDialog.show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    Log.e("back","back");
+                    Intent intent = new Intent(FloorActivity.this, SectionActivity.class);
+                    intent.putExtra(House.class.getSimpleName(), section.getHouse());
+                    startActivity(intent);
+                    return true;
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

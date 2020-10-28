@@ -42,7 +42,7 @@ public class FloorAdapter extends ArrayAdapter<Floor> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Floor floor = floorList.get(position);
-        convertView = inflater.inflate(R.layout.floor_list_item_view, null, false);
+        convertView = inflater.inflate(R.layout.simple_list_item_view, null, false);
         final ViewHolder viewHolder = new ViewHolder(convertView, floor);
         convertView.setTag(viewHolder);
 
@@ -57,8 +57,8 @@ public class FloorAdapter extends ArrayAdapter<Floor> {
         private ViewHolder(View rootView, Floor floor) {
             this.floor = floor;
 
-            floorTitle = rootView.findViewById(R.id.floors_list_item_text);
-            deleteFloorButton = rootView.findViewById(R.id.deleteFloorButton);
+            floorTitle = rootView.findViewById(R.id.list_item_title);
+            deleteFloorButton = rootView.findViewById(R.id.deleteItemButton);
 
             floorTitle.setText(floor.getFullNumber());
 

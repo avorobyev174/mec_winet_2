@@ -3,6 +3,7 @@
     package="com.avorobyev174.mec_winet">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
@@ -23,7 +24,7 @@
         <activity android:name=".classes.floor.FloorActivity" />
         <activity android:name=".classes.vestibule.VestibuleActivity" />
         <activity android:name=".classes.winet.WinetActivity" />
-        <activity android:name=".WinetInfoActivity" />
+        <activity android:name=".classes.winetData.WinetDataActivity" />
     </application>
 
 </manifest>

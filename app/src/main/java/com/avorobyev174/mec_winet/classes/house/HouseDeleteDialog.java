@@ -2,11 +2,14 @@ package com.avorobyev174.mec_winet.classes.house;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +28,7 @@ import retrofit2.Response;
 public class HouseDeleteDialog extends Dialog {
     public Activity activity;
     public Button deleteHouseButton, cancelDeleteHouseButton;
-    public TextView title;
+    public TextView houseDeleteTitle;
     private House house;
     private HouseAdapter houseAdapter;
     private List<House> houseList;
@@ -43,13 +46,13 @@ public class HouseDeleteDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.house_delete_dialog_activity);
+        setContentView(R.layout.delete_dialog_activity);
 
-        deleteHouseButton = findViewById(R.id.deleteHouseDialogButton);
-        cancelDeleteHouseButton = findViewById(R.id.cancelDeleteHouseDialogButton);
+        deleteHouseButton = findViewById(R.id.confirmDeleteDialogButton);
+        cancelDeleteHouseButton = findViewById(R.id.cancelDeleteDialogButton);
 
-        title = findViewById(R.id.deleteHouseTitle);
-        title.setText("Вы хотите удалить дом \"" + house.getFullStreetName() + "\" ?");
+        houseDeleteTitle = findViewById(R.id.deleteDialogTitle);
+        houseDeleteTitle.setText("Вы хотите удалить дом \"" + house.getFullStreetName() + "\" ?");
 
         cancelDeleteHouseButton.setOnClickListener(new View.OnClickListener() {
             @Override

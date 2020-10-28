@@ -40,7 +40,7 @@ public class SectionAdapter extends ArrayAdapter<Section> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Section section = sectionList.get(position);
-        convertView = inflater.inflate(R.layout.section_list_item_view, null, false);
+        convertView = inflater.inflate(R.layout.simple_list_item_view, null, false);
 
         final ViewHolder viewHolder = new ViewHolder(convertView, section);
         convertView.setTag(viewHolder);
@@ -56,8 +56,8 @@ public class SectionAdapter extends ArrayAdapter<Section> {
         private ViewHolder(View rootView, Section section) {
             this.section = section;
 
-            sectionTitle = rootView.findViewById(R.id.sections_list_item_text);
-            deleteSectionButton = rootView.findViewById(R.id.deleteSectionButton);
+            sectionTitle = rootView.findViewById(R.id.list_item_title);
+            deleteSectionButton = rootView.findViewById(R.id.deleteItemButton);
 
             sectionTitle.setText(section.getFullNumber());
 

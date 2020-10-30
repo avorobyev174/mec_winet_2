@@ -9,8 +9,9 @@
     <color name="light_grey">#C5C5C5</color>
     <color name="lightRed">#FCACAC</color>
     <color name="red">#F33D3D</color>
+    <color name="dark_red">#A80F0F</color>
     <color name="grey">#8F8F8F</color>
-    <color name="green">#15DC00</color>
+    <color name="green">#11B600</color>
     <color name="dark_green">#0A6C00</color>
     <color name="light_light_grey">#EDEDED</color>
 </resources>

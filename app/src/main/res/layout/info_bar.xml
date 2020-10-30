@@ -6,37 +6,55 @@
     android:layout_height="100dp"
     android:background="#E6E6E6"
     android:gravity="bottom"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/info_bar"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="2dp"
-        android:layout_weight="20"
-        android:gravity="center_horizontal|left|center_vertical"
-        android:text="Информация"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/createButtonInfoBar"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="2dp"
-        android:layout_weight="3"
-        android:background="@null"
-        android:clickable="true"
-        android:contentDescription="TODO"
-        android:scaleType="fitXY"
-        android:tint="@color/grey"
-        app:srcCompat="@drawable/plus2_icon"
-        tools:ignore="VectorDrawableCompat" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/info_bar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="20"
+            android:gravity="center_horizontal|left|center_vertical"
+            android:text="Информация"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/createButtonInfoBar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="3"
+            android:background="@null"
+            android:clickable="true"
+            android:contentDescription="TODO"
+            android:scaleType="fitXY"
+            android:tint="@color/green"
+            app:srcCompat="@drawable/plus_icon"
+            tools:ignore="VectorDrawableCompat" />
+    </LinearLayout>
+
+
 
 </LinearLayout>

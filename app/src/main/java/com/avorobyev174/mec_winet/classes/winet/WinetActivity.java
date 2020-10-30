@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.floor.Floor;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
@@ -91,16 +92,7 @@ public class WinetActivity extends AppCompatActivity {
         createWinetButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    // pointer goes down
-                    ((ImageView) view).setColorFilter(getResources().getColor(R.color.green),
-                            PorterDuff.Mode.SRC_ATOP);
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // pointer goes up
-                    ((ImageView) view).setColorFilter(getResources().getColor(R.color.grey),
-                            PorterDuff.Mode.SRC_ATOP);
-                }
-                return false;
+                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
             }
         });
     }

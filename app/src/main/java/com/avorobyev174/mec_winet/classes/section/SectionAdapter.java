@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.house.HouseDeleteDialog;
 
@@ -64,16 +65,7 @@ public class SectionAdapter extends ArrayAdapter<Section> {
             deleteSectionButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                        // pointer goes down
-                        ((ImageView) view).setColorFilter(context.getResources().getColor(R.color.red),
-                                PorterDuff.Mode.SRC_ATOP);
-                    } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                        // pointer goes up
-                        ((ImageView) view).setColorFilter(context.getResources().getColor(R.color.light_grey),
-                                PorterDuff.Mode.SRC_ATOP);
-                    }
-                    return false;
+                    return Utils.changeRemoveButtonColor(view, motionEvent, getContext());
                 }
             });
 

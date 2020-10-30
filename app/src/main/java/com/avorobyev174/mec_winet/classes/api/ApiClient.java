@@ -5,8 +5,7 @@ import com.avorobyev174.mec_winet.classes.house.HousesApi;
 import com.avorobyev174.mec_winet.classes.section.SectionApi;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleApi;
 import com.avorobyev174.mec_winet.classes.winet.WinetApi;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.avorobyev174.mec_winet.classes.apartment.ApartmentApi;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -52,5 +51,10 @@ public class ApiClient {
     public static WinetApi getWinetApi() {
         WinetApi winetApi = getRetrofit().create(WinetApi.class);
         return winetApi;
+    }
+
+    public static ApartmentApi getApartmentApi() {
+        ApartmentApi apartmentApi = getRetrofit().create(ApartmentApi.class);
+        return apartmentApi;
     }
 }

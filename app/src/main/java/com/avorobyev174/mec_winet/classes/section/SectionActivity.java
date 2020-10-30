@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
@@ -90,16 +91,7 @@ public class SectionActivity extends AppCompatActivity {
         createSectionButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    // pointer goes down
-                    ((ImageView)view).setColorFilter(getResources().getColor(R.color.green),
-                            PorterDuff.Mode.SRC_ATOP);
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // pointer goes up
-                    ((ImageView)view).setColorFilter(getResources().getColor(R.color.grey),
-                            PorterDuff.Mode.SRC_ATOP);
-                }
-                return false;
+                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
             }
         });
     }

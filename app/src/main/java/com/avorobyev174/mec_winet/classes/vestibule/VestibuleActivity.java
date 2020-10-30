@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
 import com.avorobyev174.mec_winet.classes.section.Section;
 import com.avorobyev174.mec_winet.classes.section.SectionActivity;
@@ -90,16 +91,7 @@ public class VestibuleActivity extends AppCompatActivity {
         createVestibuleButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    // pointer goes down
-                    ((ImageView)view).setColorFilter(getResources().getColor(R.color.green),
-                            PorterDuff.Mode.SRC_ATOP);
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // pointer goes up
-                    ((ImageView)view).setColorFilter(getResources().getColor(R.color.grey),
-                            PorterDuff.Mode.SRC_ATOP);
-                }
-                return false;
+                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
             }
         });
     }
@@ -114,9 +106,6 @@ public class VestibuleActivity extends AppCompatActivity {
                 Log.e("get vest response", "success = " + response.body().getSuccess());
 
                 for (VestibuleInfo vestibuleInfo : response.body().getResult()) {
-//                    Log.e("response", "section number = " + sectionInfo.getSectionNumber());
-//                    Log.e("response", "section id = " + sectionInfo.getId());
-//                    Log.e("response", "section house id= " + sectionInfo.getHouseId());
                     vestList.add(new Vestibule(vestibuleInfo.getId(), Integer.parseInt(vestibuleInfo.getVestibuleNumber()), floor));
                 }
 

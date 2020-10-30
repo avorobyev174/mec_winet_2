@@ -14,7 +14,7 @@ public class Section implements Serializable {
     }
 
     public String getFullNumber() {
-        return "Подьезд " + getNumber();
+        return "Подъезд " + getNumber();
     }
 
     public String getShortNumber() {

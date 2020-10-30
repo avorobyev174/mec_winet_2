@@ -14,9 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/app_bar" />
 
     <ListView
         android:id="@+id/sections_list_view"

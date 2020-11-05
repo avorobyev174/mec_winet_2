@@ -2,7 +2,9 @@ package com.avorobyev174.mec_winet.classes.apartment;
 
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 
-public class Apartment {
+import java.io.Serializable;
+
+public class Apartment implements Serializable {
     private int id;
     private Winet winet;
     private String apartmentDesc;
@@ -17,7 +19,7 @@ public class Apartment {
         return winet;
     }
 
-    public String getNumber() {
+    public String getDescription() {
         return apartmentDesc;
     }
 
@@ -25,8 +27,13 @@ public class Apartment {
         return id;
     }
 
-    public  String getFullNumber() {
-        return getNumber() + " кв.";
+    public  String getFullApartmentDesc() {
+        if (apartmentType.equals("1")) {
+            return getApartmentDesc() + " кв.";
+        } else {
+            return getApartmentDesc();
+        }
+
     }
 
     public String getApartmentDesc() {

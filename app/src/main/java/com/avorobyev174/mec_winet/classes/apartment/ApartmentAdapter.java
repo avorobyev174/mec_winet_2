@@ -1,6 +1,7 @@
 package com.avorobyev174.mec_winet.classes.apartment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,19 +22,15 @@ import java.util.List;
 public class ApartmentAdapter extends ArrayAdapter<Apartment> {
     private LayoutInflater inflater;
     private List<Apartment> apartmentList;
-    private List<Apartment> removeApartmentList;
-    private List<Apartment> addApartmentList;
     private Context context;
     private ApartmentAdapter apartmentAdapter;
 
-    public ApartmentAdapter(@NonNull Context context, int resource, List<Apartment> apartmentList, LayoutInflater inflater, List<Apartment> removeApartmentList, List<Apartment> addApartmentList) {
+    public ApartmentAdapter(@NonNull Context context, int resource, List<Apartment> apartmentList, LayoutInflater inflater) {
         super(context, resource, apartmentList);
         this.inflater = inflater;
         this.apartmentList = apartmentList;
         this.context = context;
         this.apartmentAdapter = this;
-        this.removeApartmentList = removeApartmentList;
-        this.addApartmentList = addApartmentList;
     }
 
     @SuppressLint("ViewHolder")
@@ -59,7 +56,7 @@ public class ApartmentAdapter extends ArrayAdapter<Apartment> {
             apartmentTitle = rootView.findViewById(R.id.list_item_title);
             deleteApartmentButton = rootView.findViewById(R.id.deleteItemButton);
 
-            apartmentTitle.setText(this.apartment.getFullNumber());
+            apartmentTitle.setText(this.apartment.getFullApartmentDesc());
 
             deleteApartmentButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -71,12 +68,14 @@ public class ApartmentAdapter extends ArrayAdapter<Apartment> {
             deleteApartmentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    removeApartmentList.add(apartment);
-                    apartmentList.remove(apartment);
-                    addApartmentList.remove(apartment);
-                    apartmentAdapter.notifyDataSetChanged();
+                    deleteApartment(view);
                 }
             });
+        }
+
+        private void deleteApartment(View view) {
+            ApartmentDeleteDialog apartmentDeleteDialog = new ApartmentDeleteDialog((Activity) context, apartment, apartmentAdapter, apartmentList);
+            apartmentDeleteDialog.show();
         }
     }
 }

@@ -20,13 +20,13 @@ public class ApartmentResponseWithParams {
 
     @SerializedName("params")
     @Expose
-    private WinetDataParams params;
+    private ApartmentParams params;
 
-    public WinetDataParams getParams() {
+    public ApartmentParams getParams() {
         return params;
     }
 
-    public void setParams(WinetDataParams params) {
+    public void setParams(ApartmentParams params) {
         this.params = params;
     }
 

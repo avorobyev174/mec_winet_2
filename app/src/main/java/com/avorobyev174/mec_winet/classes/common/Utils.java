@@ -32,4 +32,12 @@ public class Utils {
         }
         return false;
     }
+
+    public static String getApartmentTypeTitle(Context context, String apartmentType) {
+        if (apartmentType.equals("1")) {
+            return context.getResources().getString(R.string.apartment_type_phizical);
+        } else  {
+            return context.getResources().getString(R.string.apartment_type_commercial);
+        }
+    }
 }

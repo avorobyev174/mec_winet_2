@@ -11,4 +11,6 @@
     <string name="save_winet_info_button">Сохранить</string>
     <string name="ser_number_winet">Серийный номер</string>
     <string name="comment_winet">Комментарий</string>
+    <string name="apartment_type_phizical">Физ. лицо</string>
+    <string name="apartment_type_commercial">Юр. лицо</string>
 </resources>

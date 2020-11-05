@@ -3,9 +3,11 @@ package com.avorobyev174.mec_winet.classes.apartment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,8 @@ import androidx.annotation.NonNull;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
+import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winet.WinetAdapter;
@@ -50,17 +54,34 @@ public class ApartmentCreateDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.winet_create_dialog_activity);
+        setContentView(R.layout.apartment_create_dialog_activity);
 
-        confirmCreateApartmentButton = findViewById(R.id.confirmCreateWinetButton);
-        cancelCreateApartmentButton = findViewById(R.id.cancelCreateWinetButton);
-        apartmentType = findViewById(R.id.winetTypeCreateDialog);
+        confirmCreateApartmentButton = findViewById(R.id.confirmCreateApartmentButton);
+        cancelCreateApartmentButton = findViewById(R.id.cancelCreateApartmentButton);
+        apartmentType = findViewById(R.id.apartmentTypeCreateDialog);
+        description = findViewById(R.id.apartmentDescrCreateDialog);
 
-        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.winet_type_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.apartment_type_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         apartmentType.setAdapter(adapter);
-        description = findViewById(R.id.winetSerNumberCreateDialog);
+
+        apartmentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (position == 0) {
+                    description.setInputType(InputType.TYPE_CLASS_NUMBER);
+                } else {
+                    description.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
         cancelCreateApartmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,35 +93,40 @@ public class ApartmentCreateDialog extends Dialog {
         confirmCreateApartmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String winetSerNumber =  description.getText().toString();
-                String winetType = apartmentType.getSelectedItem().toString();
+                String apartDesc =  description.getText().toString();
+                String apartType = (apartmentType.getSelectedItem().toString()).equals(getContext().getResources().getString(R.string.apartment_type_phizical)) ? "1" : "2";
                 for (Apartment apartment : apartmentList) {
-//                    if (winetSerNumber.equals(apartment.getSerNumber()) && winetType.equals(apartment.getType())) {
-//                        Toast.makeText(getContext(), "Вайнет \"" + winetSerNumber +  "\" с типом \"" + winetType +  "\" уже существует в этом тамбуре", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
+                    if (apartType.equals(apartment.getApartmentType()) && apartDesc.equals(apartment.getApartmentDesc())) {
+                        if (apartType.equals("1")) {
+                            Toast.makeText(getContext(), apartType + "\"" + apartDesc +  "\" уже привязана к этой вайнет", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), apartType + "\"" + apartDesc +  "\" уже привязано к этой вайнет", Toast.LENGTH_SHORT).show();
+                        }
+                        return;
+                    }
                 }
 
-                Call<WinetResponseWithParams> createFloorCall = ApiClient.getWinetApi().createWinet(winetType, winetSerNumber, winet.getId());
+                Call<ApartmentResponseWithParams> createApartmentCall = ApiClient.getApartmentApi().createApartment(apartType, apartDesc, "", winet.getId());
 
-                createFloorCall.enqueue(new Callback<WinetResponseWithParams>() {
+                createApartmentCall.enqueue(new Callback<ApartmentResponseWithParams>() {
                     @Override
-                    public void onResponse(Call<WinetResponseWithParams> call, Response<WinetResponseWithParams> response) {
+                    public void onResponse(Call<ApartmentResponseWithParams> call, Response<ApartmentResponseWithParams> response) {
 
-                        Log.e("create winet response", "success = " + response.body().getSuccess());
-                        int winetId = Integer.parseInt(response.body().getResult());
-                        WinetParams winetParams = response.body().getParams();
-                        Log.e("create winet response", "params winet number = " + winetParams.getSerNumber());
-                        apartmentList.add(new Winet(winetId, winetParams.getType(), winetParams.getSerNumber(), winet));
-
-                        Toast.makeText(getContext(), "Вайнет \"" + winetParams.getSerNumber()+  "\" с типом \"" + winetParams.getType() +  "\" добавлен в список", Toast.LENGTH_SHORT).show();
+                        Log.e("create apart response", "success = " + response.body().getSuccess());
+                        int apartId = Integer.parseInt(response.body().getResult());
+                        ApartmentParams apartmentParams = response.body().getParams();
+                        Log.e("create apart response", "params apart number = " + apartmentParams.getApartmentDesc());
+                        Log.e("create apart sql", response.body().getSql());
+                        apartmentList.add(new Apartment(apartId, apartmentParams.getApartmentType(), apartmentParams.getApartmentDesc(), "", winet));
+                        Toast.makeText(getContext(), Utils.getApartmentTypeTitle(getContext(), apartmentParams.getApartmentType()) +
+                                                                            " \"" + apartmentParams.getApartmentDesc() +  "\" добавлено в список", Toast.LENGTH_SHORT).show();
 
                         apartmentAdapter.notifyDataSetChanged();
                         dismiss();
                     }
 
                     @Override
-                    public void onFailure(Call<WinetResponseWithParams> call, Throwable t) {
+                    public void onFailure(Call<ApartmentResponseWithParams> call, Throwable t) {
                         Log.e("response", "failure " + t);
                     }
                 });

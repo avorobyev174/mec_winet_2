@@ -25,6 +25,7 @@
         <activity android:name=".classes.vestibule.VestibuleActivity" />
         <activity android:name=".classes.winet.WinetActivity" />
         <activity android:name=".classes.winetData.WinetDataActivity" />
+        <activity android:name=".classes.apartment.ApartmentActivity" />
     </application>
 
 </manifest>

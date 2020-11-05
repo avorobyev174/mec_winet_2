@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +24,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
+import com.avorobyev174.mec_winet.classes.apartment.ApartmentCreateDialog;
+import com.avorobyev174.mec_winet.classes.apartment.ApartmentParams;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.api.SimpleResponse;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
+import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
+import com.avorobyev174.mec_winet.classes.winet.WinetCreateDialog;
 import com.avorobyev174.mec_winet.classes.winet.WinetInfo;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentAdapter;
@@ -49,7 +55,7 @@ import retrofit2.Response;
 public class WinetDataActivity extends AppCompatActivity {
     private TextView infoBar;
     private Spinner winetTypeSpinner;
-    private EditText serNumberInput, commentInput, winetApartmentNumber;
+    private EditText serNumberInput, commentInput;
     private Winet winet;
     private ArrayAdapter<CharSequence> adapter;
     private ImageButton infoBarButton, barCodeButton, addApartmentButton;
@@ -79,7 +85,6 @@ public class WinetDataActivity extends AppCompatActivity {
         infoBar = findViewById(R.id.info_bar);
         winetTypeSpinner = findViewById(R.id.winetType);
         serNumberInput = findViewById(R.id.winetSerNumber);
-        winetApartmentNumber = findViewById(R.id.winetApartmentNumber);
         commentInput = findViewById(R.id.winetComment);
         progressBar  = findViewById(R.id.progressBar);
         apartmentListView = findViewById(R.id.apartmentList);
@@ -90,6 +95,8 @@ public class WinetDataActivity extends AppCompatActivity {
         addApartmentButton = findViewById(R.id.addApartmentButton);
         infoBarButton = findViewById(R.id.createButtonInfoBar);
         infoBarButton.setVisibility(View.GONE);
+        //infoBarButton.setImageResource(R.drawable.save_icon2);
+        saveWinetInfoButton.setVisibility(View.GONE);
 
         Bundle arguments = getIntent().getExtras();
         winet = (Winet) arguments.getSerializable(Winet.class.getSimpleName());
@@ -103,14 +110,14 @@ public class WinetDataActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         winetTypeSpinner.setAdapter(adapter);
 
-        apartmentAdapter = new ApartmentAdapter(this, R.layout.simple_list_item_view, apartmentList, getLayoutInflater(), removeApartmentList, addApartmentList);
+        apartmentAdapter = new ApartmentAdapter(this, R.layout.simple_list_item_view, apartmentList, getLayoutInflater());
         apartmentListView.setAdapter(apartmentAdapter);
 
         initOnClick();
     }
 
     public void initOnClick() {
-        saveWinetInfoButton.setOnClickListener(new View.OnClickListener() {
+        infoBarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveInfo();
@@ -127,14 +134,17 @@ public class WinetDataActivity extends AppCompatActivity {
         addApartmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addApartmentToList();
+                createApartment();
             }
         });
 
-        addApartmentButton.setOnTouchListener(new View.OnTouchListener() {
+        apartmentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Apartment apartment = apartmentList.get(i);
+                Intent intent = new Intent(WinetDataActivity.this, ApartmentActivity.class);
+                intent.putExtra(Apartment.class.getSimpleName(), apartment);
+                startActivity(intent);
             }
         });
     }
@@ -220,7 +230,11 @@ public class WinetDataActivity extends AppCompatActivity {
     }
 
     private void saveInfo() {
-        Call<WinetDataResponseWithParams> messages = ApiClient.getWinetApi().saveWinet("winet", winet.getId(), winet.getType(), winet.getSerNumber(), winet.getComment());
+        Call<WinetDataResponseWithParams> messages = ApiClient.getWinetApi().saveWinet("winet",
+                                                                                              winet.getId(),
+                                                                                              winetTypeSpinner.getSelectedItem().toString(),
+                                                                                              serNumberInput.getText().toString(),
+                                                                                              commentInput.getText().toString());
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
         messages.enqueue(new Callback<WinetDataResponseWithParams>() {
@@ -229,9 +243,9 @@ public class WinetDataActivity extends AppCompatActivity {
                 Log.e("save winet info res", "success = " + response.body().getSuccess());
                 WinetDataParams winetDataParams = response.body().getParams();
 
-                //progressBar.setVisibility(ProgressBar.INVISIBLE);
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
-                saveApartmentInfo();
+                //saveApartmentInfo();
                 Toast.makeText(getApplicationContext(), "Вайнет \"" + winetDataParams.getSerNumber()+  "\" с типом \"" + winetDataParams.getType() +  "\" обновлен", Toast.LENGTH_SHORT).show();
             }
 
@@ -243,97 +257,55 @@ public class WinetDataActivity extends AppCompatActivity {
         });
     }
 
-    private void saveApartmentInfo() {
-        if (!addApartmentList.isEmpty()) {
-            for (Apartment apartment : addApartmentList) {
-                Log.e("add apart", apartment.getFullNumber());
-                createApartment(apartment);
-            }
-            addApartmentList.clear();
-        }
+//    private void saveApartmentInfo() {
+//        if (!addApartmentList.isEmpty()) {
+//            for (Apartment apartment : addApartmentList) {
+//                Log.e("add apart", apartment.getFullNumber());
+//                //createApartment(apartment);
+//            }
+//            addApartmentList.clear();
+//        }
+//
+//        if (!removeApartmentList.isEmpty()) {
+//            for (Apartment apartment : removeApartmentList) {
+//                Log.e("remove apart", apartment.getFullNumber());
+//                deleteApartment(apartment);
+//            }
+//            removeApartmentList.clear();
+//        }
+//    }
 
-        if (!removeApartmentList.isEmpty()) {
-            for (Apartment apartment : removeApartmentList) {
-                Log.e("remove apart", apartment.getFullNumber());
-                deleteApartment(apartment);
-            }
-            removeApartmentList.clear();
-        }
+    private void createApartment() {
+        ApartmentCreateDialog apartmentCreateDialog = new ApartmentCreateDialog(this, apartmentAdapter,  apartmentList, winet);
+        apartmentCreateDialog.show();
     }
 
-    private void createApartment(Apartment apartment) {
-        Call<ApartmentResponseWithParams> messages = ApiClient.getApartmentApi().createApartment(apartment.getApartmentType(),
-                                                                                                 apartment.getApartmentDesc(),
-                                                                                                null,
-                                                                                                 winet.getId());
-        //progressBar.setVisibility(ProgressBar.VISIBLE);
+//    private void deleteApartment(Apartment apartment) {
+//        Call<SimpleResponse> messages = ApiClient.getApartmentApi().deleteApartment("apartment", apartment.getId());
+//        //progressBar.setVisibility(ProgressBar.VISIBLE);
+//
+//        messages.enqueue(new Callback<SimpleResponse>() {
+//            @Override
+//            public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+//                Log.e("delete apart res", "success = " + response.body().getSuccess());
+//                //Log.e("delete apart res", "sql " + response.body().getSql());
+//
+//                //progressBar.setVisibility(ProgressBar.INVISIBLE);
+//                apartmentList.remove(apartment);
+//                apartmentAdapter.notifyDataSetChanged();
+//
+//                //Toast.makeText(getApplicationContext(), Utils.getApartmentTypeTitle(getApplicationContext(), apartment.getApartmentType()) +
+//                //                            " \"" + apartment.getApartmentDesc() +  "\" удалено", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<SimpleResponse> call, Throwable t) {
+//                Log.e("response", "failure " + t);
+//                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
-        messages.enqueue(new Callback<ApartmentResponseWithParams>() {
-            @Override
-            public void onResponse(Call<ApartmentResponseWithParams> call, Response<ApartmentResponseWithParams> response) {
-                Log.e("create apart res", "success = " + response.body().getSuccess());
-                WinetDataParams winetDataParams = response.body().getParams();
-
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-                apartmentAdapter.notifyDataSetChanged();
-
-                //Toast.makeText(getApplicationContext(), "Вайнет \"" + winetDataParams.getSerNumber()+  "\" с типом \"" + winetDataParams.getType() +  "\" обновлен", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ApartmentResponseWithParams> call, Throwable t) {
-                Log.e("response", "failure " + t);
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void deleteApartment(Apartment apartment) {
-        Call<SimpleResponse> messages = ApiClient.getApartmentApi().deleteApartment("apartment", apartment.getId());
-        //progressBar.setVisibility(ProgressBar.VISIBLE);
-
-        messages.enqueue(new Callback<SimpleResponse>() {
-            @Override
-            public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
-                Log.e("delete apart res", "success = " + response.body().getSuccess());
-                //WinetDataParams winetDataParams = response.body().getParams();
-
-                progressBar.setVisibility(ProgressBar.INVISIBLE);
-                apartmentAdapter.notifyDataSetChanged();
-
-                //Toast.makeText(getApplicationContext(), "Вайнет \"" + winetDataParams.getSerNumber()+  "\" с типом \"" + winetDataParams.getType() +  "\" обновлен", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<SimpleResponse> call, Throwable t) {
-                Log.e("response", "failure " + t);
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
-    private void addApartmentToList() {
-        String apartmentNumber = winetApartmentNumber.getText().toString();
-
-        if (apartmentNumber.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Введите номер квартиры", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        for (Apartment apartment : apartmentList) {
-            if (apartment.getNumber().equals(apartmentNumber)) {
-                Toast.makeText(getApplicationContext(), "Такая квартира уже существует в списке", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-        Apartment apartment = new Apartment(0, winetApartmentNumber.getText().toString(), winet.getId(), winet);
-        apartmentList.add(apartment);
-        addApartmentList.add(apartment);
-        apartmentAdapter.notifyDataSetChanged();
-
-        winetApartmentNumber.setText("");
-    }
 
     public void scan() {
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);

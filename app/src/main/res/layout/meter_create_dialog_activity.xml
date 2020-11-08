@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/meterTypeLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Тип счетчика:"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@+id/include" />
+
+    <Spinner
+        android:id="@+id/meterTypeCreateDialog"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <EditText
+        android:id="@+id/meterSerNumberCreateDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:ems="10"
+        android:hint="Серийный номер" />
+
+
+    <EditText
+        android:id="@+id/meterPasswordCreateDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:ems="10"
+        android:hint="Пароль"
+        android:inputType="number" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/background_light"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/confirmCreateMeterButton"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:layout_marginRight="20dp"
+            android:background="@android:color/white"
+            android:clickable="true"
+            android:text="Добавить"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:backgroundTint="@color/light_light_grey" />
+
+        <Button
+            android:id="@+id/cancelCreateMeterButton"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@android:color/white"
+            android:clickable="true"
+            android:text="Отмена"
+            android:textColor="@android:color/black"
+            app:backgroundTint="@color/light_light_grey" />
+    </LinearLayout>
+
+</LinearLayout>

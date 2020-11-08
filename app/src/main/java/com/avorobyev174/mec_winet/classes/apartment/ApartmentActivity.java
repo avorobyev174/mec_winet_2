@@ -11,28 +11,39 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.floor.Floor;
+import com.avorobyev174.mec_winet.classes.meter.Meter;
+import com.avorobyev174.mec_winet.classes.meter.MeterActivity;
+import com.avorobyev174.mec_winet.classes.meter.MeterAdapter;
+import com.avorobyev174.mec_winet.classes.meter.MeterCreateDialog;
+import com.avorobyev174.mec_winet.classes.meter.MeterInfoResponse;
+import com.avorobyev174.mec_winet.classes.meter.MetertInfo;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class ApartmentActivity extends AppCompatActivity {
-    private List<Apartment> apartmentList;
-    private ApartmentAdapter adapter;
+    private List<Meter> meterList;
+    private MeterAdapter adapter;
     private ListView meterListView;
     private Apartment apartment;
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton createMeterButton;
+    private ImageButton createMeterButton, createButtonInfoBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,11 +55,15 @@ public class ApartmentActivity extends AppCompatActivity {
     }
 
     private void init() {
-        apartmentList = new ArrayList<>();
+        meterList = new ArrayList<>();
         infoBar = findViewById(R.id.info_bar);
         meterListView = findViewById(R.id.meterListView);
         createMeterButton = findViewById(R.id.addMeterButton);
+        createButtonInfoBar = findViewById(R.id.createButtonInfoBar);
         progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
+        createButtonInfoBar.setVisibility(View.INVISIBLE);
+
         Bundle arguments = getIntent().getExtras();
         this.apartment = (Apartment) arguments.getSerializable(Apartment.class.getSimpleName());
         infoBar.setText(apartment.getWinet().getVestibule().getFloor().getSection().getHouse().getFullStreetName() + " → "
@@ -57,7 +72,7 @@ public class ApartmentActivity extends AppCompatActivity {
                         + apartment.getWinet().getVestibule().getShortNumber() + " → "
                         + apartment.getWinet().getSerNumber());
 
-        adapter = new ApartmentAdapter(this, R.layout.simple_list_item_view, apartmentList, getLayoutInflater());
+        adapter = new MeterAdapter(this, R.layout.simple_list_item_view, meterList, getLayoutInflater());
         meterListView.setAdapter(adapter);
 
         initOnClick();
@@ -68,10 +83,9 @@ public class ApartmentActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //TO DO METER
-                //Winet winet = apartmentList.get(i);
-                Intent intent = new Intent(ApartmentActivity.this, WinetDataActivity.class);
-                intent.putExtra(Winet.class.getSimpleName(), apartment);
+                Meter meter = meterList.get(i);
+                Intent intent = new Intent(ApartmentActivity.this, MeterActivity.class);
+                intent.putExtra(Meter.class.getSimpleName(), meter);
                 startActivity(intent);
             }
         });
@@ -92,35 +106,35 @@ public class ApartmentActivity extends AppCompatActivity {
     }
 
     private void fillMeterList() {
-//        Call<WinetInfoResponse> messages = ApiClient.getWinetApi().getWinets(winet.getId());
-//        progressBar.setVisibility(ProgressBar.VISIBLE);
-//
-//        messages.enqueue(new Callback<WinetInfoResponse>() {
-//            @Override
-//            public void onResponse(Call<WinetInfoResponse> call, Response<WinetInfoResponse> response) {
-//                Log.e("get winet response", "success = " + response.body().getSuccess());
-//
-//                for (WinetInfo winetInfo : response.body().getResult()) {
-//                    apartmentList.add(new Winet(winetInfo.getId(), winetInfo.getType(), winetInfo.getSerNumber(), winet));
-//                }
-//
-//                progressBar.setVisibility(ProgressBar.INVISIBLE);
-//                adapter.notifyDataSetChanged();
-//
-//                Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " вайнет", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<WinetInfoResponse> call, Throwable t) {
-//                Log.e("response", "failure " + t);
-//                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        Call<MeterInfoResponse> messages = ApiClient.getMeterApi().getMeters(apartment.getId());
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
+        messages.enqueue(new Callback<MeterInfoResponse>() {
+            @Override
+            public void onResponse(Call<MeterInfoResponse> call, Response<MeterInfoResponse> response) {
+                Log.e("get meter response", "success = " + response.body().getSuccess());
+
+                for (MetertInfo metertInfo : response.body().getResult()) {
+                    meterList.add(new Meter(metertInfo.getId(), metertInfo.getMeterType(), metertInfo.getSerNumber(), metertInfo.getPassword(), apartment));
+                }
+
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+                adapter.notifyDataSetChanged();
+
+                Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " счетчиков", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<MeterInfoResponse> call, Throwable t) {
+                Log.e("response", "failure " + t);
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void createNewMeter(View view) {
-//        WinetCreateDialog winetCreateDialog = new WinetCreateDialog(this, adapter, apartmentList, winet);
-//        winetCreateDialog.show();
+        MeterCreateDialog meterCreateDialog = new MeterCreateDialog(this, adapter, meterList, apartment);
+        meterCreateDialog.show();
     }
 
     @Override
@@ -130,7 +144,7 @@ public class ApartmentActivity extends AppCompatActivity {
                 case KeyEvent.KEYCODE_BACK:
                     Log.e("back","back");
                     Intent intent = new Intent(ApartmentActivity.this, WinetDataActivity.class);
-                    intent.putExtra(Floor.class.getSimpleName(), apartment);
+                    intent.putExtra(Winet.class.getSimpleName(), apartment.getWinet());
                     startActivity(intent);
                     return true;
             }

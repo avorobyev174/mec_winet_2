@@ -1,46 +1,58 @@
 package com.avorobyev174.mec_winet.classes.meter;
 
-import com.avorobyev174.mec_winet.classes.winet.Winet;
+import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 
-public class Meter {
+import java.io.Serializable;
+
+public class Meter implements Serializable {
     private int id;
-    private int winetId;
-    private Winet winet;
-    private String apartmentNumber;
+    private Apartment apartment;
+    private String serNumber;
+    private String type;
+    private String password;
 
-    public void setWinetId(int winetId) {
-        this.winetId = winetId;
+    public String getType() {
+        return type;
     }
 
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public int getWinetId() {
-        return winetId;
+    public String getPassword() {
+        return password;
     }
 
-    public Winet getWinet() {
-        return winet;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setSerNumber(String serNumber) {
+        this.serNumber = serNumber;
+    }
+
+    public Apartment getApartment() {
+        return apartment;
     }
 
     public String getNumber() {
-        return apartmentNumber;
+        return serNumber;
     }
 
     public int getId() {
         return id;
     }
 
-    public  String getFullNumber() {
-        return getNumber() + " кв.";
+    public String getSerNumber() {
+        return serNumber;
     }
 
-    public Meter(int id, String apartmentNumber, int winetId, Winet winet) {
+    public Meter(int id, String type, String serNumber, String password, Apartment apartment) {
         this.id = id;
-        this.winetId = winetId;
-        this.apartmentNumber = apartmentNumber;
-        this.winet = winet;
+        this.type = type;
+        this.password = password;
+        this.serNumber = serNumber;
+        this.apartment = apartment;
     }
 
 }

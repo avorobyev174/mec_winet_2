@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,21 +25,15 @@ import androidx.core.app.ActivityCompat;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentCreateDialog;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentParams;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
-import com.avorobyev174.mec_winet.classes.api.SimpleResponse;
-import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
-import com.avorobyev174.mec_winet.classes.winet.WinetCreateDialog;
 import com.avorobyev174.mec_winet.classes.winet.WinetInfo;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentAdapter;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentInfo;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentInfoResponse;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentResponseWithParams;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -70,7 +63,7 @@ public class WinetDataActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.winet_info_activity);
+        setContentView(R.layout.winet_data_activity);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
         init();
 

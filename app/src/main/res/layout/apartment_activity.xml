@@ -22,7 +22,6 @@
         android:layout_marginEnd="5dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="300dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,9 +31,8 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:padding="5dp"
             tools:layout_editor_absoluteX="-4dp">
 
             <TextView
@@ -48,12 +46,14 @@
             <ImageButton
                 android:id="@+id/addMeterButton"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="50dp"
+                android:layout_gravity="top"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/transparent"
-                android:scaleType="centerCrop"
+                android:scaleType="center"
                 android:tint="@color/green"
-                app:srcCompat="@drawable/plus_icon2" />
+                app:srcCompat="@drawable/plus_icon3" />
 
         </LinearLayout>
 

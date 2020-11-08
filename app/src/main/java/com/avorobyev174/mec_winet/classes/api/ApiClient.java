@@ -2,6 +2,7 @@ package com.avorobyev174.mec_winet.classes.api;
 
 import com.avorobyev174.mec_winet.classes.floor.FloorApi;
 import com.avorobyev174.mec_winet.classes.house.HousesApi;
+import com.avorobyev174.mec_winet.classes.meter.MeterApi;
 import com.avorobyev174.mec_winet.classes.section.SectionApi;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleApi;
 import com.avorobyev174.mec_winet.classes.winet.WinetApi;
@@ -56,5 +57,10 @@ public class ApiClient {
     public static ApartmentApi getApartmentApi() {
         ApartmentApi apartmentApi = getRetrofit().create(ApartmentApi.class);
         return apartmentApi;
+    }
+
+    public static MeterApi getMeterApi() {
+        MeterApi meterApi = getRetrofit().create(MeterApi.class);
+        return meterApi;
     }
 }

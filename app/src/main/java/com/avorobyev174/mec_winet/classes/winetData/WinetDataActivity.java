@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,6 +27,7 @@ import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentCreateDialog;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
+import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
@@ -87,7 +89,8 @@ public class WinetDataActivity extends AppCompatActivity {
         barCodeButton = findViewById(R.id.barCodeButton);
         addApartmentButton = findViewById(R.id.addApartmentButton);
         infoBarButton = findViewById(R.id.createButtonInfoBar);
-        infoBarButton.setVisibility(View.GONE);
+        //infoBarButton.setVisibility(View.GONE);
+        infoBarButton.setImageResource(R.drawable.save_icon_3);
         //infoBarButton.setImageResource(R.drawable.save_icon2);
         saveWinetInfoButton.setVisibility(View.GONE);
 
@@ -117,10 +120,24 @@ public class WinetDataActivity extends AppCompatActivity {
             }
         });
 
+        infoBarButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
+            }
+        });
+
         barCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scan();
+            }
+        });
+
+        barCodeButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return Utils.changeOtherButtonColor(view, motionEvent, getApplicationContext());
             }
         });
 
@@ -174,7 +191,7 @@ public class WinetDataActivity extends AppCompatActivity {
                 serNumberInput.setText(winetDataInfo.getSerNumber());
                 commentInput.setText(winetDataInfo.getComment());
 
-                //progressBar.setVisibility(ProgressBar.INVISIBLE);
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
                 fillApartmentInfo();
 
@@ -250,55 +267,11 @@ public class WinetDataActivity extends AppCompatActivity {
         });
     }
 
-//    private void saveApartmentInfo() {
-//        if (!addApartmentList.isEmpty()) {
-//            for (Apartment apartment : addApartmentList) {
-//                Log.e("add apart", apartment.getFullNumber());
-//                //createApartment(apartment);
-//            }
-//            addApartmentList.clear();
-//        }
-//
-//        if (!removeApartmentList.isEmpty()) {
-//            for (Apartment apartment : removeApartmentList) {
-//                Log.e("remove apart", apartment.getFullNumber());
-//                deleteApartment(apartment);
-//            }
-//            removeApartmentList.clear();
-//        }
-//    }
 
     private void createApartment() {
         ApartmentCreateDialog apartmentCreateDialog = new ApartmentCreateDialog(this, apartmentAdapter,  apartmentList, winet);
         apartmentCreateDialog.show();
     }
-
-//    private void deleteApartment(Apartment apartment) {
-//        Call<SimpleResponse> messages = ApiClient.getApartmentApi().deleteApartment("apartment", apartment.getId());
-//        //progressBar.setVisibility(ProgressBar.VISIBLE);
-//
-//        messages.enqueue(new Callback<SimpleResponse>() {
-//            @Override
-//            public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
-//                Log.e("delete apart res", "success = " + response.body().getSuccess());
-//                //Log.e("delete apart res", "sql " + response.body().getSql());
-//
-//                //progressBar.setVisibility(ProgressBar.INVISIBLE);
-//                apartmentList.remove(apartment);
-//                apartmentAdapter.notifyDataSetChanged();
-//
-//                //Toast.makeText(getApplicationContext(), Utils.getApartmentTypeTitle(getApplicationContext(), apartment.getApartmentType()) +
-//                //                            " \"" + apartment.getApartmentDesc() +  "\" удалено", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<SimpleResponse> call, Throwable t) {
-//                Log.e("response", "failure " + t);
-//                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
 
     public void scan() {
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);

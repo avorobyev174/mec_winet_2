@@ -70,7 +70,8 @@ public class ApartmentActivity extends AppCompatActivity {
                         + apartment.getWinet().getVestibule().getFloor().getSection().getShortNumber() + " → "
                         + apartment.getWinet().getVestibule().getFloor().getShortNumber() + " → "
                         + apartment.getWinet().getVestibule().getShortNumber() + " → "
-                        + apartment.getWinet().getSerNumber());
+                        + apartment.getWinet().getSerNumber() + " → "
+                        + apartment.getFullApartmentDesc());
 
         adapter = new MeterAdapter(this, R.layout.simple_list_item_view, meterList, getLayoutInflater());
         meterListView.setAdapter(adapter);

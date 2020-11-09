@@ -14,4 +14,5 @@
     <color name="green">#11B600</color>
     <color name="dark_green">#0A6C00</color>
     <color name="light_light_grey">#EDEDED</color>
+    <color name="black">#000000</color>
 </resources>

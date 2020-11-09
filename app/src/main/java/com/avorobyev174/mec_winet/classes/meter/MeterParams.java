@@ -10,9 +10,9 @@ public class MeterParams {
 
     @SerializedName("meter_type")
     @Expose
-    private String meterType;
+    private int meterType;
 
-    @SerializedName("serial_number")
+    @SerializedName("meter_serial_number")
     @Expose
     private String serNumber;
 
@@ -28,11 +28,11 @@ public class MeterParams {
         this.apartmentId = apartmentId;
     }
 
-    public String getMeterType() {
+    public int getMeterType() {
         return meterType;
     }
 
-    public void setMeterType(String meterType) {
+    public void setMeterType(int meterType) {
         this.meterType = meterType;
     }
 

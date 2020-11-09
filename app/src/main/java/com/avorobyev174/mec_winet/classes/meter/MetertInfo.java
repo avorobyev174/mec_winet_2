@@ -12,13 +12,13 @@ public class MetertInfo {
     @Expose
     private int apartmentId;
 
-    @SerializedName("serial_number")
+    @SerializedName("meter_serial_number")
     @Expose
     private String serNumber;
 
     @SerializedName("meter_type")
     @Expose
-    private String meterType;
+    private int meterType;
 
     @SerializedName("meter_password")
     @Expose
@@ -56,11 +56,11 @@ public class MetertInfo {
         this.serNumber = serNumber;
     }
 
-    public String getMeterType() {
+    public int getMeterType() {
         return meterType;
     }
 
-    public void setMeterType(String meterType) {
+    public void setMeterType(int meterType) {
         this.meterType = meterType;
     }
 }

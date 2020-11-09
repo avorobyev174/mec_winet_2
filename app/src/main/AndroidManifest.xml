@@ -26,6 +26,7 @@
         <activity android:name=".classes.winet.WinetActivity" />
         <activity android:name=".classes.winetData.WinetDataActivity" />
         <activity android:name=".classes.apartment.ApartmentActivity" />
+        <activity android:name=".classes.meter.MeterActivity" />
     </application>
 
 </manifest>

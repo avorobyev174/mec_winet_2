@@ -8,14 +8,14 @@ public class Meter implements Serializable {
     private int id;
     private Apartment apartment;
     private String serNumber;
-    private String type;
+    private int type;
     private String password;
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -47,7 +47,7 @@ public class Meter implements Serializable {
         return serNumber;
     }
 
-    public Meter(int id, String type, String serNumber, String password, Apartment apartment) {
+    public Meter(int id, int type, String serNumber, String password, Apartment apartment) {
         this.id = id;
         this.type = type;
         this.password = password;

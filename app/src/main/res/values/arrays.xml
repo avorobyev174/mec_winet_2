@@ -12,4 +12,13 @@
         <item>Физ. лицо</item>
         <item>Юр. лицо</item>
     </string-array>
+    <string-array name="meter_type_array">
+        <item>СОЭ-55/60Ш-Т-415</item>
+        <item>АГАТ 2-45</item>
+        <item>Нева МТ 324</item>
+        <item>АГАТ 2-45</item>
+        <item>Меркурий 200.Х</item>
+        <item>Меркурий 23X</item>
+        <item>Меркурий 206</item>
+    </string-array>
 </resources>

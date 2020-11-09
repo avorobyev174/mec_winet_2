@@ -1,6 +1,5 @@
 package com.avorobyev174.mec_winet.classes.section;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -8,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,8 +21,6 @@ import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.house.HouseActivity;
-import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +42,7 @@ public class SectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sections_activity);
+        setContentView(R.layout.section_activity);
         init();
 
         fillSectionsList();

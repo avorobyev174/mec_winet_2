@@ -60,7 +60,7 @@ public class MeterCreateDialog extends Dialog {
         serNumber = findViewById(R.id.meterSerNumberCreateDialog);
         password = findViewById(R.id.meterPasswordCreateDialog);
 
-        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.apartment_type_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.meter_type_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         meterType.setAdapter(adapter);
@@ -77,9 +77,10 @@ public class MeterCreateDialog extends Dialog {
             public void onClick(View view) {
                 String serialNumber =  serNumber.getText().toString();
                 String pass =  password.getText().toString();
-                String type = meterType.getSelectedItem().toString();
+                String typeStr = meterType.getSelectedItem().toString();
+                int type = Utils.getMeterType(typeStr);
                 for (Meter meter : meterList) {
-                    if (type.equals(meter.getType()) && serialNumber.equals(meter.getSerNumber())) {
+                    if (type == meter.getType() && serialNumber.equals(meter.getSerNumber())) {
                         Toast.makeText(getContext(), "Счетчик" + "\"" + serialNumber +  "\" уже привязан к этой квартире", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -97,7 +98,7 @@ public class MeterCreateDialog extends Dialog {
                         Log.e("create meter response", "params meter number = " + meterParams.getSerNumber());
                         Log.e("create meter sql", response.body().getSql());
                         meterList.add(new Meter(meterId, meterParams.getMeterType(), meterParams.getSerNumber(), meterParams.getPassword(),apartment));
-                        Toast.makeText(getContext(), meterParams.getSerNumber() +  "\" добавлен в список", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Счетчик" + "\"" + meterParams.getSerNumber() +  "\" добавлен в список", Toast.LENGTH_SHORT).show();
 
                         meterAdapter.notifyDataSetChanged();
                         dismiss();

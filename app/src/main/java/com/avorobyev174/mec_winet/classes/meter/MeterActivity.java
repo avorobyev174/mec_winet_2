@@ -1,14 +1,19 @@
 package com.avorobyev174.mec_winet.classes.meter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,35 +21,45 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
+import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.winetData.WinetDataParams;
+import com.avorobyev174.mec_winet.classes.winetData.WinetDataResponseWithParams;
 
-import java.util.ArrayList;
-import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MeterActivity extends AppCompatActivity {
-    private List<Meter> meterList;
-    //private MeterAdapter adapter;
+    private Spinner meterTypeSpinner;
+    private EditText serNumberInput, passwordInput;
     private Meter meter;
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton saveMeterButton, createButtonInfoBar;
+    private ImageButton infoBarButton;
+    private ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.apartment_activity);
+        setContentView(R.layout.meter_activity);
         init();
 
         fillMeterInfo();
     }
 
+    @SuppressLint("ResourceType")
     private void init() {
-        meterList = new ArrayList<>();
+        //meterList = new ArrayList<>();
         infoBar = findViewById(R.id.info_bar);
 
-        //saveMeterButton = findViewById(R.id.addMeterButton);
-        createButtonInfoBar = findViewById(R.id.createButtonInfoBar);
+        meterTypeSpinner = findViewById(R.id.meterType);
+        serNumberInput = findViewById(R.id.meterSerNumber);
+        passwordInput = findViewById(R.id.meterPassword);
+        infoBarButton = findViewById(R.id.createButtonInfoBar);
+        infoBarButton.setImageResource(R.drawable.save_icon_3);
+        //createButtonInfoBar = findViewById(R.id.createButtonInfoBar);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(ProgressBar.INVISIBLE);
         //createButtonInfoBar.setVisibility(View.INVISIBLE);
@@ -56,22 +71,24 @@ public class MeterActivity extends AppCompatActivity {
                         + meter.getApartment().getWinet().getVestibule().getFloor().getShortNumber() + " → "
                         + meter.getApartment().getWinet().getVestibule().getShortNumber() + " → "
                         + meter.getApartment().getWinet().getSerNumber() + " → "
-                        + meter.getSerNumber());
+                        + meter.getApartment().getFullApartmentDesc());
 
-        //adapter = new MeterAdapter(this, R.layout.simple_list_item_view, meterList, getLayoutInflater());
+        adapter = ArrayAdapter.createFromResource(this, R.array.meter_type_array, R.xml.spinner_standard);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        meterTypeSpinner.setAdapter(adapter);
 
         initOnClick();
     }
 
     public void initOnClick() {
-        saveMeterButton.setOnClickListener(new View.OnClickListener() {
+        infoBarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //createNewMeter(view);
+                saveInfo();
             }
         });
 
-        saveMeterButton.setOnTouchListener(new View.OnTouchListener() {
+        infoBarButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
@@ -80,30 +97,32 @@ public class MeterActivity extends AppCompatActivity {
     }
 
     private void fillMeterInfo() {
-//        Call<WinetInfoResponse> messages = ApiClient.getWinetApi().getWinets(winet.getId());
-//        progressBar.setVisibility(ProgressBar.VISIBLE);
-//
-//        messages.enqueue(new Callback<WinetInfoResponse>() {
-//            @Override
-//            public void onResponse(Call<WinetInfoResponse> call, Response<WinetInfoResponse> response) {
-//                Log.e("get winet response", "success = " + response.body().getSuccess());
-//
-//                for (WinetInfo winetInfo : response.body().getResult()) {
-//                    apartmentList.add(new Winet(winetInfo.getId(), winetInfo.getType(), winetInfo.getSerNumber(), winet));
-//                }
-//
-//                progressBar.setVisibility(ProgressBar.INVISIBLE);
-//                adapter.notifyDataSetChanged();
-//
-//                Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " вайнет", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<WinetInfoResponse> call, Throwable t) {
-//                Log.e("response", "failure " + t);
-//                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        Call<MeterInfoResponse> messages = ApiClient.getMeterApi().getMeter("meter", meter.getId());
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
+        messages.enqueue(new Callback<MeterInfoResponse>() {
+            @Override
+            public void onResponse(Call<MeterInfoResponse> call, Response<MeterInfoResponse> response) {
+                Log.e("get meter info res", "success = " + response.body().getSuccess());
+                MetertInfo meterInfo = response.body().getResult().get(0);
+                Log.e("get meter info id", " = " + meterInfo.getId());
+
+                meterTypeSpinner.setSelection(adapter.getPosition(Utils.getMeterTypeTitle(meterInfo.getMeterType())));
+                serNumberInput.setText(meterInfo.getSerNumber());
+                passwordInput.setText(meterInfo.getPassword());
+
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+                adapter.notifyDataSetChanged();
+
+                Toast.makeText(getApplicationContext(), "Счетчик \"" + meterInfo.getSerNumber() +  "\" загружен", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<MeterInfoResponse> call, Throwable t) {
+                Log.e("response", "failure " + t);
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -121,4 +140,34 @@ public class MeterActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    private void saveInfo() {
+        Call<MeterResponseWithParams> messages = ApiClient.getMeterApi().saveMeter("meter",
+                meter.getId(),
+                Utils.getMeterType(meterTypeSpinner.getSelectedItem().toString()),
+                serNumberInput.getText().toString(),
+                passwordInput.getText().toString());
+
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
+        messages.enqueue(new Callback<MeterResponseWithParams>() {
+            @Override
+            public void onResponse(Call<MeterResponseWithParams> call, Response<MeterResponseWithParams> response) {
+                Log.e("save winet info res", "success = " + response.body().getSuccess());
+                MeterParams meterParams = response.body().getParams();
+
+                progressBar.setVisibility(ProgressBar.INVISIBLE);
+                adapter.notifyDataSetChanged();
+
+                Toast.makeText(getApplicationContext(), "Счетчик \"" + meterParams.getSerNumber() +  "\" обновлен", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<MeterResponseWithParams> call, Throwable t) {
+                Log.e("response", "failure " + t);
+                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

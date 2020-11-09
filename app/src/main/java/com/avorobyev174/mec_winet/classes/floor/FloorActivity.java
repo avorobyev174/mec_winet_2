@@ -1,6 +1,5 @@
 package com.avorobyev174.mec_winet.classes.floor;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -8,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,13 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.section.SectionActivity;
-import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.section.Section;
-import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
-import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +43,7 @@ public class FloorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.floors_activity);
+        setContentView(R.layout.floor_activity);
         init();
 
         fillFloorsList();

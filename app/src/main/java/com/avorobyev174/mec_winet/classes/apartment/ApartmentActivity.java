@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.meter.Meter;
 import com.avorobyev174.mec_winet.classes.meter.MeterActivity;
@@ -25,6 +26,7 @@ import com.avorobyev174.mec_winet.classes.meter.MeterAdapter;
 import com.avorobyev174.mec_winet.classes.meter.MeterCreateDialog;
 import com.avorobyev174.mec_winet.classes.meter.MeterInfoResponse;
 import com.avorobyev174.mec_winet.classes.meter.MetertInfo;
+import com.avorobyev174.mec_winet.classes.section.SectionActivity;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 
@@ -36,14 +38,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ApartmentActivity extends AppCompatActivity {
-    private List<Meter> meterList;
-    private MeterAdapter adapter;
+public class ApartmentActivity extends Entity {
     private ListView meterListView;
-    private Apartment apartment;
+    private MeterAdapter adapter;
+    private List<Meter> meterList;
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton createMeterButton, createButtonInfoBar;
+    private Apartment apartment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,17 +56,15 @@ public class ApartmentActivity extends AppCompatActivity {
     }
 
     private void init() {
+        Bundle arguments = getIntent().getExtras();
+        this.apartment = (Apartment) arguments.getSerializable(Apartment.class.getSimpleName());
+        initNavMenu(this, WinetDataActivity.class, apartment.getWinet());
+
         meterList = new ArrayList<>();
         infoBar = findViewById(R.id.info_bar);
         meterListView = findViewById(R.id.meterListView);
-        createMeterButton = findViewById(R.id.addMeterButton);
-        createButtonInfoBar = findViewById(R.id.createButtonInfoBar);
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
-        createButtonInfoBar.setVisibility(View.INVISIBLE);
 
-        Bundle arguments = getIntent().getExtras();
-        this.apartment = (Apartment) arguments.getSerializable(Apartment.class.getSimpleName());
         infoBar.setText(apartment.getWinet().getVestibule().getFloor().getSection().getHouse().getFullStreetName() + " → "
                         + apartment.getWinet().getVestibule().getFloor().getSection().getShortNumber() + " → "
                         + apartment.getWinet().getVestibule().getFloor().getShortNumber() + " → "
@@ -76,10 +75,6 @@ public class ApartmentActivity extends AppCompatActivity {
         adapter = new MeterAdapter(this, R.layout.simple_list_item_view, meterList, getLayoutInflater());
         meterListView.setAdapter(adapter);
 
-        initOnClick();
-    }
-
-    public void initOnClick() {
         meterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -88,20 +83,6 @@ public class ApartmentActivity extends AppCompatActivity {
                 Intent intent = new Intent(ApartmentActivity.this, MeterActivity.class);
                 intent.putExtra(Meter.class.getSimpleName(), meter);
                 startActivity(intent);
-            }
-        });
-
-        createMeterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewMeter(view);
-            }
-        });
-
-        createMeterButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
             }
         });
     }
@@ -133,24 +114,25 @@ public class ApartmentActivity extends AppCompatActivity {
         });
     }
 
-    public void createNewMeter(View view) {
+    @Override
+    public void showObjCreateDialog() {
         MeterCreateDialog meterCreateDialog = new MeterCreateDialog(this, adapter, meterList, apartment);
         meterCreateDialog.show();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    Log.e("back","back");
-                    Intent intent = new Intent(ApartmentActivity.this, WinetDataActivity.class);
-                    intent.putExtra(Winet.class.getSimpleName(), apartment.getWinet());
-                    startActivity(intent);
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    Log.e("back","back");
+//                    Intent intent = new Intent(ApartmentActivity.this, WinetDataActivity.class);
+//                    intent.putExtra(Winet.class.getSimpleName(), apartment.getWinet());
+//                    startActivity(intent);
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

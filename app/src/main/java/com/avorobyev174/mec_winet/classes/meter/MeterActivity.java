@@ -22,7 +22,9 @@ import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataParams;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataResponseWithParams;
 
@@ -31,14 +33,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MeterActivity extends AppCompatActivity {
-    private Spinner meterTypeSpinner;
-    private EditText serNumberInput, passwordInput;
-    private Meter meter;
+public class MeterActivity extends Entity {
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton infoBarButton;
+    private Spinner meterTypeSpinner;
+    private EditText serNumberInput, passwordInput;
     private ArrayAdapter<CharSequence> adapter;
+    private Meter meter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,21 +52,16 @@ public class MeterActivity extends AppCompatActivity {
 
     @SuppressLint("ResourceType")
     private void init() {
-        //meterList = new ArrayList<>();
-        infoBar = findViewById(R.id.info_bar);
+        Bundle arguments = getIntent().getExtras();
+        meter = (Meter) arguments.getSerializable(Meter.class.getSimpleName());
+        initNavMenu(this, ApartmentActivity.class, meter.getApartment());
 
+        infoBar = findViewById(R.id.info_bar);
+        progressBar = findViewById(R.id.progressBar);
         meterTypeSpinner = findViewById(R.id.meterType);
         serNumberInput = findViewById(R.id.meterSerNumber);
         passwordInput = findViewById(R.id.meterPassword);
-        infoBarButton = findViewById(R.id.createButtonInfoBar);
-        infoBarButton.setImageResource(R.drawable.save_icon_3);
-        //createButtonInfoBar = findViewById(R.id.createButtonInfoBar);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
-        //createButtonInfoBar.setVisibility(View.INVISIBLE);
 
-        Bundle arguments = getIntent().getExtras();
-        this.meter = (Meter) arguments.getSerializable(Meter.class.getSimpleName());
         infoBar.setText(meter.getApartment().getWinet().getVestibule().getFloor().getSection().getHouse().getFullStreetName() + " → "
                         + meter.getApartment().getWinet().getVestibule().getFloor().getSection().getShortNumber() + " → "
                         + meter.getApartment().getWinet().getVestibule().getFloor().getShortNumber() + " → "
@@ -76,24 +72,6 @@ public class MeterActivity extends AppCompatActivity {
         adapter = ArrayAdapter.createFromResource(this, R.array.meter_type_array, R.xml.spinner_standard);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         meterTypeSpinner.setAdapter(adapter);
-
-        initOnClick();
-    }
-
-    public void initOnClick() {
-        infoBarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveInfo();
-            }
-        });
-
-        infoBarButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
-            }
-        });
     }
 
     private void fillMeterInfo() {
@@ -125,23 +103,29 @@ public class MeterActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    Log.e("back","back");
-                    Intent intent = new Intent(MeterActivity.this, ApartmentActivity.class);
-                    intent.putExtra(Apartment.class.getSimpleName(), meter.getApartment());
-                    startActivity(intent);
-                    return true;
-            }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    Log.e("back","back");
+//                    Intent intent = new Intent(MeterActivity.this, ApartmentActivity.class);
+//                    intent.putExtra(Apartment.class.getSimpleName(), meter.getApartment());
+//                    startActivity(intent);
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
-        }
-        return super.onKeyDown(keyCode, event);
+
+    @Override
+    public void saveObjData() {
+        saveMeterData();
     }
 
-    private void saveInfo() {
+    private void saveMeterData() {
         Call<MeterResponseWithParams> messages = ApiClient.getMeterApi().saveMeter("meter",
                 meter.getId(),
                 Utils.getMeterType(meterTypeSpinner.getSelectedItem().toString()),

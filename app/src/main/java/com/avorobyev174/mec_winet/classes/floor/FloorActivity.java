@@ -16,7 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.house.HouseActivity;
+import com.avorobyev174.mec_winet.classes.house.HouseCreateDialog;
 import com.avorobyev174.mec_winet.classes.section.SectionActivity;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
@@ -31,14 +34,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class FloorActivity extends AppCompatActivity {
-    private List<Floor> floorList;
-    private FloorAdapter adapter;
+public class FloorActivity extends Entity {
     private ListView floorListView;
-    private Section section;
+    private FloorAdapter adapter;
+    private List<Floor> floorList;
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton createFloorButton;
+    private Section section;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,23 +53,20 @@ public class FloorActivity extends AppCompatActivity {
 
 
     private void init() {
-        floorList = new ArrayList<>();
-        infoBar = findViewById(R.id.info_bar);
-        floorListView = findViewById(R.id.floors_list_view);
-        createFloorButton = findViewById(R.id.createButtonInfoBar);
-        progressBar  = findViewById(R.id.progressBar);
         Bundle arguments = getIntent().getExtras();
-        this.section = (Section) arguments.getSerializable(Section.class.getSimpleName());
+        section = (Section) arguments.getSerializable(Section.class.getSimpleName());
+        initNavMenu(this, SectionActivity.class, section.getHouse());
+
+        floorList = new ArrayList<>();
+        floorListView = findViewById(R.id.floors_list_view);
+        infoBar = findViewById(R.id.info_bar);
+        progressBar  = findViewById(R.id.progressBar);
 
         infoBar.setText(section.getHouse().getFullStreetName() + " → " + section.getShortNumber());
 
         adapter = new FloorAdapter(this, R.layout.simple_list_item_view, floorList, getLayoutInflater());
         floorListView.setAdapter(adapter);
 
-        initOnClick();
-    }
-
-    private void initOnClick() {
         floorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -76,20 +75,6 @@ public class FloorActivity extends AppCompatActivity {
                 Intent intent = new Intent(FloorActivity.this, VestibuleActivity.class);
                 intent.putExtra(Floor.class.getSimpleName(), floor);
                 startActivity(intent);
-            }
-        });
-
-        createFloorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewFloor(view);
-            }
-        });
-
-        createFloorButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
             }
         });
     }
@@ -121,24 +106,25 @@ public class FloorActivity extends AppCompatActivity {
         });
     }
 
-    public void createNewFloor(View view) {
+    @Override
+    public void showObjCreateDialog() {
         FloorCreateDialog floorCreateDialog = new FloorCreateDialog(this, adapter,  floorList, section);
         floorCreateDialog.show();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    Log.e("back","back");
-                    Intent intent = new Intent(FloorActivity.this, SectionActivity.class);
-                    intent.putExtra(House.class.getSimpleName(), section.getHouse());
-                    startActivity(intent);
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    Log.e("back","back");
+//                    Intent intent = new Intent(FloorActivity.this, SectionActivity.class);
+//                    intent.putExtra(House.class.getSimpleName(), section.getHouse());
+//                    startActivity(intent);
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

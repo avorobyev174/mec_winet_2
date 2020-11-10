@@ -1,21 +1,17 @@
 package com.avorobyev174.mec_winet.classes.house;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avorobyev174.mec_winet.R;
-import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.section.SectionActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 
@@ -29,12 +25,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HouseActivity extends AppCompatActivity {
+public class HouseActivity extends Entity {
     private ListView housesListView;
     private HouseAdapter adapter;
     private List<House> houseList;
     private TextView infoBar;
-    private ImageButton createHouseButton;
     private ProgressBar progressBar;
 
     @Override
@@ -47,8 +42,8 @@ public class HouseActivity extends AppCompatActivity {
     }
 
     private void init() {
+        initNavMenu(this, null, null);
         houseList = new ArrayList<>();
-        createHouseButton = findViewById(R.id.createButtonInfoBar);
         housesListView = findViewById(R.id.houses_list_view);
         infoBar = findViewById(R.id.info_bar);
         progressBar  = findViewById(R.id.progressBar);
@@ -58,10 +53,6 @@ public class HouseActivity extends AppCompatActivity {
         adapter = new HouseAdapter(this, R.layout.simple_list_item_view, houseList, getLayoutInflater());
         housesListView.setAdapter(adapter);
 
-        initOnClick();
-    }
-
-    private void initOnClick() {
         housesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -72,20 +63,12 @@ public class HouseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        createHouseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewHouse(view);
-            }
-        });
-
-        createHouseButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
-            }
-        });
+    @Override
+    public void showObjCreateDialog() {
+        HouseCreateDialog houseCreateDialog = new HouseCreateDialog(this, adapter,  houseList);
+        houseCreateDialog.show();
     }
 
     public void fillHousesList() {
@@ -113,10 +96,5 @@ public class HouseActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void createNewHouse(View view) {
-        HouseCreateDialog houseCreateDialog = new HouseCreateDialog(this, adapter,  houseList);
-        houseCreateDialog.show();
     }
 }

@@ -18,8 +18,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.floor.Floor;
+import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
+import com.avorobyev174.mec_winet.classes.section.SectionActivity;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
@@ -33,14 +36,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class WinetActivity extends AppCompatActivity {
-    private List<Winet> winetList;
-    private WinetAdapter adapter;
+public class WinetActivity extends Entity {
     private ListView winetListView;
-    private Vestibule vestibule;
+    private WinetAdapter adapter;
+    private List<Winet> winetList;
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton createWinetButton;
+    private Vestibule vestibule;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,13 +54,15 @@ public class WinetActivity extends AppCompatActivity {
     }
 
     private void init() {
-        winetList = new ArrayList<>();
-        infoBar = findViewById(R.id.info_bar);
-        winetListView = findViewById(R.id.winet_list_view);
-        createWinetButton = findViewById(R.id.createButtonInfoBar);
-        progressBar = findViewById(R.id.progressBar);
         Bundle arguments = getIntent().getExtras();
-        this.vestibule = (Vestibule) arguments.getSerializable(Vestibule.class.getSimpleName());
+        vestibule = (Vestibule) arguments.getSerializable(Vestibule.class.getSimpleName());
+        initNavMenu(this, VestibuleActivity.class, vestibule.getFloor());
+
+        winetList = new ArrayList<>();
+        winetListView = findViewById(R.id.winet_list_view);
+        infoBar = findViewById(R.id.info_bar);
+        progressBar = findViewById(R.id.progressBar);
+
         infoBar.setText(vestibule.getFloor().getSection().getHouse().getFullStreetName() + " → "
                         + vestibule.getFloor().getSection().getShortNumber() + " → "
                         + vestibule.getFloor().getShortNumber() + " → "
@@ -67,10 +71,6 @@ public class WinetActivity extends AppCompatActivity {
         adapter = new WinetAdapter(this, R.layout.simple_list_item_view, winetList, getLayoutInflater());
         winetListView.setAdapter(adapter);
 
-        initOnClick();
-    }
-
-    public void initOnClick() {
         winetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -81,21 +81,8 @@ public class WinetActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        createWinetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewWinet(view);
-            }
-        });
-
-        createWinetButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
-            }
-        });
     }
+
 
     private void fillWinetList() {
         Call<WinetInfoResponse> messages = ApiClient.getWinetApi().getWinets(vestibule.getId());
@@ -124,24 +111,25 @@ public class WinetActivity extends AppCompatActivity {
         });
     }
 
-    public void createNewWinet(View view) {
+    @Override
+    public void showObjCreateDialog() {
         WinetCreateDialog winetCreateDialog = new WinetCreateDialog(this, adapter,  winetList, vestibule);
         winetCreateDialog.show();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    Log.e("back","back");
-                    Intent intent = new Intent(WinetActivity.this, VestibuleActivity.class);
-                    intent.putExtra(Floor.class.getSimpleName(), vestibule.getFloor());
-                    startActivity(intent);
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    Log.e("back","back");
+//                    Intent intent = new Intent(WinetActivity.this, VestibuleActivity.class);
+//                    intent.putExtra(Floor.class.getSimpleName(), vestibule.getFloor());
+//                    startActivity(intent);
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Действия">
+        <menu>
+            <item
+                android:id="@+id/menuAddObject"
+                android:title="Добавить новый дом"
+                android:icon="@drawable/plus_icon2"/>
+            <item
+                android:id="@+id/menuSaveObject"
+                android:title="Сохранить изменения"
+                android:icon="@drawable/save_icon_3"/>
+        </menu>
+    </item>
+</menu>

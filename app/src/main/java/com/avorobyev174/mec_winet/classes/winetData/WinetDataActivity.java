@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -20,15 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentCreateDialog;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
 import com.avorobyev174.mec_winet.classes.winet.WinetInfo;
@@ -47,20 +44,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class WinetDataActivity extends AppCompatActivity {
+public class WinetDataActivity extends Entity {
+    private ApartmentAdapter apartmentAdapter;
+    private List<Apartment> apartmentList;
     private TextView infoBar;
+    private ProgressBar progressBar;
     private Spinner winetTypeSpinner;
     private EditText serNumberInput, commentInput;
-    private Winet winet;
     private ArrayAdapter<CharSequence> adapter;
-    private ImageButton infoBarButton, barCodeButton, addApartmentButton;
-    private Button saveWinetInfoButton;
-    private ProgressBar progressBar;
+    private ImageButton infoBarButton, barCodeButton;
     private ListView apartmentListView;
-    private List<Apartment> apartmentList;
-    private List<Apartment> removeApartmentList;
-    private List<Apartment> addApartmentList;
-    private ApartmentAdapter apartmentAdapter;
+    private Winet winet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,28 +68,18 @@ public class WinetDataActivity extends AppCompatActivity {
 
     @SuppressLint("ResourceType")
     private void init() {
+        Bundle arguments = getIntent().getExtras();
+        winet = (Winet) arguments.getSerializable(Winet.class.getSimpleName());
+        initNavMenu(this, WinetActivity.class, winet.getVestibule());
+
         apartmentList = new ArrayList<>();
-        removeApartmentList = new ArrayList<>();
-        addApartmentList = new ArrayList<>();
+        apartmentListView = findViewById(R.id.apartmentList);
         infoBar = findViewById(R.id.info_bar);
+        progressBar  = findViewById(R.id.progressBar);
         winetTypeSpinner = findViewById(R.id.winetType);
         serNumberInput = findViewById(R.id.winetSerNumber);
         commentInput = findViewById(R.id.winetComment);
-        progressBar  = findViewById(R.id.progressBar);
-        apartmentListView = findViewById(R.id.apartmentList);
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
-
-        saveWinetInfoButton = findViewById(R.id.saveWinetInfo);
         barCodeButton = findViewById(R.id.barCodeButton);
-        addApartmentButton = findViewById(R.id.addApartmentButton);
-        infoBarButton = findViewById(R.id.createButtonInfoBar);
-        //infoBarButton.setVisibility(View.GONE);
-        infoBarButton.setImageResource(R.drawable.save_icon_3);
-        //infoBarButton.setImageResource(R.drawable.save_icon2);
-        saveWinetInfoButton.setVisibility(View.GONE);
-
-        Bundle arguments = getIntent().getExtras();
-        winet = (Winet) arguments.getSerializable(Winet.class.getSimpleName());
 
         infoBar.setText(winet.getVestibule().getFloor().getSection().getHouse().getFullStreetName() + " → "
                         + winet.getVestibule().getFloor().getSection().getShortNumber() + " → "
@@ -112,21 +96,8 @@ public class WinetDataActivity extends AppCompatActivity {
         initOnClick();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void initOnClick() {
-        infoBarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveInfo();
-            }
-        });
-
-        infoBarButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
-            }
-        });
-
         barCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,13 +109,6 @@ public class WinetDataActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return Utils.changeOtherButtonColor(view, motionEvent, getApplicationContext());
-            }
-        });
-
-        addApartmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createApartment();
             }
         });
 
@@ -160,20 +124,25 @@ public class WinetDataActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    Log.e("back","back");
-                    Intent intent = new Intent(WinetDataActivity.this, WinetActivity.class);
-                    intent.putExtra(Vestibule.class.getSimpleName(), winet.getVestibule());
-                    startActivity(intent);
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
+    public void saveObjData() {
+        saveWinetData();
     }
+
+    //    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    Log.e("back","back");
+//                    Intent intent = new Intent(WinetDataActivity.this, WinetActivity.class);
+//                    intent.putExtra(Vestibule.class.getSimpleName(), winet.getVestibule());
+//                    startActivity(intent);
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     private void fillInfo() {
         Call<WinetDataInfoResponse> messages = ApiClient.getWinetApi().getWinet("winet", winet.getId());
@@ -239,7 +208,7 @@ public class WinetDataActivity extends AppCompatActivity {
         });
     }
 
-    private void saveInfo() {
+    private void saveWinetData() {
         Call<WinetDataResponseWithParams> messages = ApiClient.getWinetApi().saveWinet("winet",
                                                                                               winet.getId(),
                                                                                               winetTypeSpinner.getSelectedItem().toString(),
@@ -267,8 +236,8 @@ public class WinetDataActivity extends AppCompatActivity {
         });
     }
 
-
-    private void createApartment() {
+    @Override
+    public void showObjCreateDialog() {
         ApartmentCreateDialog apartmentCreateDialog = new ApartmentCreateDialog(this, apartmentAdapter,  apartmentList, winet);
         apartmentCreateDialog.show();
     }

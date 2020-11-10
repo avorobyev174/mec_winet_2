@@ -3,19 +3,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
@@ -30,14 +27,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class SectionActivity extends AppCompatActivity {
-    private List<Section> sectionList;
-    private SectionAdapter adapter;
+public class SectionActivity extends Entity {
     private ListView sectionListView;
+    private SectionAdapter adapter;
+    private List<Section> sectionList;
     private House house;
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton createSectionButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,23 +45,20 @@ public class SectionActivity extends AppCompatActivity {
     }
 
     private void init() {
-        sectionList = new ArrayList<>();
-        infoBar = findViewById(R.id.info_bar);
-        sectionListView = findViewById(R.id.sections_list_view);
-        createSectionButton = findViewById(R.id.createButtonInfoBar);
-        progressBar  = findViewById(R.id.progressBar);
         Bundle arguments = getIntent().getExtras();
-        this.house = (House) arguments.getSerializable(House.class.getSimpleName());
+        house = (House) arguments.getSerializable(House.class.getSimpleName());
+        initNavMenu(this, HouseActivity.class, null);
+
+        sectionList = new ArrayList<>();
+        sectionListView = findViewById(R.id.sections_list_view);
+        infoBar = findViewById(R.id.info_bar);
+        progressBar  = findViewById(R.id.progressBar);
 
         infoBar.setText(house.getFullStreetName());
 
         adapter = new SectionAdapter(this, R.layout.simple_list_item_view, sectionList, getLayoutInflater());
         sectionListView.setAdapter(adapter);
 
-        initOnClick();
-    }
-
-    private void initOnClick() {
         sectionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -74,20 +67,6 @@ public class SectionActivity extends AppCompatActivity {
                 Intent intent = new Intent(SectionActivity.this, FloorActivity.class);
                 intent.putExtra(Section.class.getSimpleName(), section);
                 startActivity(intent);
-            }
-        });
-
-        createSectionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewSection(view);
-            }
-        });
-
-        createSectionButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
             }
         });
     }
@@ -102,9 +81,6 @@ public class SectionActivity extends AppCompatActivity {
                 Log.e("get section response", "success = " + response.body().getSuccess());
 
                 for (SectionInfo sectionInfo : response.body().getResult()) {
-//                    Log.e("response", "section number = " + sectionInfo.getSectionNumber());
-//                    Log.e("response", "section id = " + sectionInfo.getId());
-//                    Log.e("response", "section house id= " + sectionInfo.getHouseId());
                     sectionList.add(new Section(sectionInfo.getId(), Integer.parseInt(sectionInfo.getSectionNumber()), house));
                 }
 
@@ -122,23 +98,24 @@ public class SectionActivity extends AppCompatActivity {
         });
     }
 
-    public void createNewSection(View view) {
+    @Override
+    public void showObjCreateDialog() {
         SectionCreateDialog houseCreateDialog = new SectionCreateDialog(this, adapter,  sectionList, house);
         houseCreateDialog.show();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    Log.e("back","back");
-                    Intent intent = new Intent(SectionActivity.this, HouseActivity.class);
-                    startActivity(intent);
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    Log.e("back","back");
+//                    Intent intent = new Intent(SectionActivity.this, HouseActivity.class);
+//                    startActivity(intent);
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

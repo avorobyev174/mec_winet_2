@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
 import com.avorobyev174.mec_winet.classes.section.Section;
@@ -34,14 +35,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class VestibuleActivity extends AppCompatActivity {
-    private List<Vestibule> vestList;
-    private VestibuleAdapter adapter;
+public class VestibuleActivity extends Entity {
     private ListView vestListView;
-    private Floor floor;
+    private VestibuleAdapter adapter;
+    private List<Vestibule> vestList;
     private TextView infoBar;
     private ProgressBar progressBar;
-    private ImageButton createVestibuleButton;
+    private Floor floor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,24 +53,20 @@ public class VestibuleActivity extends AppCompatActivity {
     }
 
     private void init() {
-        vestList = new ArrayList<>();
-        infoBar = findViewById(R.id.info_bar);
-        vestListView = findViewById(R.id.vestibule_list_view);
-        createVestibuleButton = findViewById(R.id.createButtonInfoBar);
-        progressBar  = findViewById(R.id.progressBar);
         Bundle arguments = getIntent().getExtras();
-        Floor floor = (Floor) arguments.getSerializable(Floor.class.getSimpleName());
-        this.floor = floor;
+        floor = (Floor) arguments.getSerializable(Floor.class.getSimpleName());
+        initNavMenu(this, FloorActivity.class, floor.getSection());
+
+        vestList = new ArrayList<>();
+        vestListView = findViewById(R.id.vestibule_list_view);
+        infoBar = findViewById(R.id.info_bar);
+        progressBar  = findViewById(R.id.progressBar);
 
         infoBar.setText(floor.getSection().getHouse().getFullStreetName() + " → " + floor.getSection().getShortNumber() + " → " + floor.getShortNumber());
 
         adapter = new VestibuleAdapter(this, R.layout.simple_list_item_view, vestList, getLayoutInflater());
         vestListView.setAdapter(adapter);
 
-        initOnClick();
-    }
-
-    private void initOnClick() {
         vestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -78,20 +74,6 @@ public class VestibuleActivity extends AppCompatActivity {
                 Intent intent = new Intent(VestibuleActivity.this, WinetActivity.class);
                 intent.putExtra(Vestibule.class.getSimpleName(), vestibule);
                 startActivity(intent);
-            }
-        });
-
-        createVestibuleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewVestibule(view);
-            }
-        });
-
-        createVestibuleButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return Utils.changeAddButtonColor(view, motionEvent, getApplicationContext());
             }
         });
     }
@@ -123,24 +105,25 @@ public class VestibuleActivity extends AppCompatActivity {
         });
     }
 
-    public void createNewVestibule(View view) {
+    @Override
+    public void showObjCreateDialog() {
         VestibuleCreateDialog vestibuleCreateDialog = new VestibuleCreateDialog(this, adapter,  vestList, floor);
         vestibuleCreateDialog.show();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-                    Log.e("back","back");
-                    Intent intent = new Intent(VestibuleActivity.this, FloorActivity.class);
-                    intent.putExtra(Section.class.getSimpleName(), floor.getSection());
-                    startActivity(intent);
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//                    Log.e("back","back");
+//                    Intent intent = new Intent(VestibuleActivity.this, FloorActivity.class);
+//                    intent.putExtra(Section.class.getSimpleName(), floor.getSection());
+//                    startActivity(intent);
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

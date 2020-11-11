@@ -27,6 +27,8 @@ import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class WinetActivity extends Entity {
     private TextView infoBar;
     private ProgressBar progressBar;
     private Vestibule vestibule;
+    private WinetCreateDialog winetCreateDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,23 +116,20 @@ public class WinetActivity extends Entity {
 
     @Override
     public void showObjCreateDialog() {
-        WinetCreateDialog winetCreateDialog = new WinetCreateDialog(this, adapter,  winetList, vestibule);
+        winetCreateDialog = new WinetCreateDialog(this, adapter,  winetList, vestibule);
         winetCreateDialog.show();
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-//            switch (keyCode) {
-//                case KeyEvent.KEYCODE_BACK:
-//                    Log.e("back","back");
-//                    Intent intent = new Intent(WinetActivity.this, VestibuleActivity.class);
-//                    intent.putExtra(Floor.class.getSimpleName(), vestibule.getFloor());
-//                    startActivity(intent);
-//                    return true;
-//            }
-//
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (intentResult != null) {
+            if (intentResult.getContents() != null) {
+                winetCreateDialog.setSerNumber(intentResult.getContents());
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

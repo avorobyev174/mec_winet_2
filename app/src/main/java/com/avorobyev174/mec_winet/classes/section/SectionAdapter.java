@@ -3,22 +3,18 @@ package com.avorobyev174.mec_winet.classes.section;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.house.House;
-import com.avorobyev174.mec_winet.classes.house.HouseDeleteDialog;
 
 import java.util.List;
 
@@ -58,7 +54,7 @@ public class SectionAdapter extends ArrayAdapter<Section> {
             this.section = section;
 
             sectionTitle = rootView.findViewById(R.id.list_item_title);
-            deleteSectionButton = rootView.findViewById(R.id.deleteItemButton);
+            deleteSectionButton = rootView.findViewById(R.id.winetDeleteItemButton);
 
             sectionTitle.setText(section.getFullNumber());
 

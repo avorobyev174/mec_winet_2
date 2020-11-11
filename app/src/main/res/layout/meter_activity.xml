@@ -13,6 +13,36 @@ tools:context=".classes.floor.FloorActivity">
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <TextView
+        android:id="@+id/meterTypeLabelCreateDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:text="Пароль"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meterSerNumber" />
+
+    <TextView
+        android:id="@+id/meterTypeLabel2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:text="Серийный номер"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meterType" />
+
     <include
         android:id="@+id/include"
         layout="@layout/info_bar"
@@ -22,13 +52,14 @@ tools:context=".classes.floor.FloorActivity">
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/meterTypeLabel"
+        android:id="@+id/meterPasswordLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:text="Тип счетчика:"
-        android:textSize="18sp"
+        android:text="Тип счетчика"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
@@ -40,38 +71,39 @@ tools:context=".classes.floor.FloorActivity">
         android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meterTypeLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/meterPasswordLabel" />
 
     <EditText
         android:id="@+id/meterSerNumber"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_margin="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:ems="10"
-        android:hint="Серийный номер"
-        android:inputType="number"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meterType" />
-
-    <EditText
-        android:id="@+id/meterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="4dp"
-        android:ems="10"
-        android:hint="Пароль"
         android:inputType="number"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meterSerNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/meterTypeLabel2" />
+
+    <EditText
+        android:id="@+id/meterPassword"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meterTypeLabelCreateDialog" />
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class ApartmentCreateDialog extends Dialog {
     public Activity activity;
     public Button confirmCreateApartmentButton, cancelCreateApartmentButton;
     public EditText description;
+    public TextView descriptionLabel;
     private ApartmentAdapter apartmentAdapter;
     private List<Apartment> apartmentList;
     private Winet winet;
@@ -60,6 +62,7 @@ public class ApartmentCreateDialog extends Dialog {
         cancelCreateApartmentButton = findViewById(R.id.cancelCreateApartmentButton);
         apartmentType = findViewById(R.id.apartmentTypeCreateDialog);
         description = findViewById(R.id.apartmentDescrCreateDialog);
+        descriptionLabel = findViewById(R.id.apartmentDescLabelCreateDialog);
 
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.apartment_type_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,8 +74,10 @@ public class ApartmentCreateDialog extends Dialog {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (position == 0) {
                     description.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    descriptionLabel.setText("Номер квартиры");
                 } else {
                     description.setInputType(InputType.TYPE_CLASS_TEXT);
+                    descriptionLabel.setText("Название");
                 }
             }
 

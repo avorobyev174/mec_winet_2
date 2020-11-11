@@ -52,7 +52,7 @@ public class WinetDataActivity extends Entity {
     private Spinner winetTypeSpinner;
     private EditText serNumberInput, commentInput;
     private ArrayAdapter<CharSequence> adapter;
-    private ImageButton infoBarButton, barCodeButton;
+    private ImageButton barCodeButton;
     private ListView apartmentListView;
     private Winet winet;
 
@@ -127,22 +127,6 @@ public class WinetDataActivity extends Entity {
     public void saveObjData() {
         saveWinetData();
     }
-
-    //    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-//            switch (keyCode) {
-//                case KeyEvent.KEYCODE_BACK:
-//                    Log.e("back","back");
-//                    Intent intent = new Intent(WinetDataActivity.this, WinetActivity.class);
-//                    intent.putExtra(Vestibule.class.getSimpleName(), winet.getVestibule());
-//                    startActivity(intent);
-//                    return true;
-//            }
-//
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
 
     private void fillInfo() {
         Call<WinetDataInfoResponse> messages = ApiClient.getWinetApi().getWinet("winet", winet.getId());

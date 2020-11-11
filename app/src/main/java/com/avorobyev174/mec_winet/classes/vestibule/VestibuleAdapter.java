@@ -3,14 +3,12 @@ package com.avorobyev174.mec_winet.classes.vestibule;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.floor.FloorDeleteDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +56,7 @@ public class VestibuleAdapter extends ArrayAdapter<Vestibule> {
             this.vestibule = vestibule;
 
             vestibuleTitle = rootView.findViewById(R.id.list_item_title);
-            deleteVestibuleButton = rootView.findViewById(R.id.deleteItemButton);
+            deleteVestibuleButton = rootView.findViewById(R.id.winetDeleteItemButton);
 
             vestibuleTitle.setText(vestibule.getFullNumber());
 

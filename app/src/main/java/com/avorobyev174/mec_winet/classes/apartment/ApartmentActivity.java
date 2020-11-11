@@ -2,11 +2,13 @@ package com.avorobyev174.mec_winet.classes.apartment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -29,6 +31,8 @@ import com.avorobyev174.mec_winet.classes.meter.MetertInfo;
 import com.avorobyev174.mec_winet.classes.section.SectionActivity;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +49,7 @@ public class ApartmentActivity extends Entity {
     private TextView infoBar;
     private ProgressBar progressBar;
     private Apartment apartment;
+    private MeterCreateDialog meterCreateDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,23 +121,20 @@ public class ApartmentActivity extends Entity {
 
     @Override
     public void showObjCreateDialog() {
-        MeterCreateDialog meterCreateDialog = new MeterCreateDialog(this, adapter, meterList, apartment);
+        meterCreateDialog = new MeterCreateDialog(this, adapter, meterList, apartment);
         meterCreateDialog.show();
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-//            switch (keyCode) {
-//                case KeyEvent.KEYCODE_BACK:
-//                    Log.e("back","back");
-//                    Intent intent = new Intent(ApartmentActivity.this, WinetDataActivity.class);
-//                    intent.putExtra(Winet.class.getSimpleName(), apartment.getWinet());
-//                    startActivity(intent);
-//                    return true;
-//            }
-//
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (intentResult != null) {
+            if (intentResult.getContents() != null) {
+                meterCreateDialog.setSerNumber(intentResult.getContents());
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

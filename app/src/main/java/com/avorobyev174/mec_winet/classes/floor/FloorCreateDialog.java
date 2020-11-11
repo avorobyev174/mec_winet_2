@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,9 +24,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FloorCreateDialog extends Dialog {
-    public Activity activity;
-    public Button createFloorButton, cancelCreateFloorButton;
-    public EditText floorNumber;
+    private Activity activity;
+    private Button createFloorButton, cancelCreateFloorButton;
+    private EditText floorNumber;
+    private TextView floorLabel;
     private FloorAdapter floorAdapter;
     private List<Floor> floorList;
     private Section section;
@@ -49,7 +51,8 @@ public class FloorCreateDialog extends Dialog {
         cancelCreateFloorButton = findViewById(R.id.cancelCreateButton);
 
         floorNumber = findViewById(R.id.objectNumber);
-        floorNumber.setHint("Номер этажа");
+        floorLabel = findViewById(R.id.objectNumberLabel);
+        floorLabel.setText("Номер этажа");
 
         cancelCreateFloorButton.setOnClickListener(new View.OnClickListener() {
             @Override

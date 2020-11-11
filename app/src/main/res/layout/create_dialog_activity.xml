@@ -7,13 +7,23 @@
     android:orientation="vertical">
 
 
+    <TextView
+        android:id="@+id/objectNumberLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Номер объекта"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/include" />
+
     <EditText
         android:id="@+id/objectNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:ems="10"
-        android:hint="Номер обьекта"
         android:inputType="number" />
 
     <LinearLayout

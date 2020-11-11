@@ -3,14 +3,12 @@ package com.avorobyev174.mec_winet.classes.winet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleDeleteDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,25 +39,28 @@ public class WinetAdapter extends ArrayAdapter<Winet> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Winet winet = winetList.get(position);
-        convertView = inflater.inflate(R.layout.simple_list_item_view, null, false);
+        convertView = inflater.inflate(R.layout.winet_list_item_view, null, false);
         final ViewHolder viewHolder = new ViewHolder(convertView, winet);
         convertView.setTag(viewHolder);
 
         return convertView;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private class ViewHolder {
-        public TextView winetTitle;
+        public TextView winetType, winetSerNmber;
         public ImageButton deleteWinetButton;
         private Winet winet;
 
         private ViewHolder(View rootView, Winet winet) {
             this.winet = winet;
 
-            winetTitle = rootView.findViewById(R.id.list_item_title);
-            deleteWinetButton = rootView.findViewById(R.id.deleteItemButton);
+            winetType = rootView.findViewById(R.id.winetTypeItem);
+            winetSerNmber = rootView.findViewById(R.id.winetSerNumberItem);
+            deleteWinetButton = rootView.findViewById(R.id.winetDeleteItemButton);
 
-            winetTitle.setText(winet.getTypeAndSerNumber());
+            winetType.setText(winet.getType());
+            winetSerNmber.setText(winet.getSerNumber());
 
             deleteWinetButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override

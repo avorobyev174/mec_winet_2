@@ -1,18 +1,23 @@
 package com.avorobyev174.mec_winet.classes.meter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
@@ -22,6 +27,8 @@ import com.avorobyev174.mec_winet.classes.apartment.ApartmentResponseWithParams;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
@@ -30,14 +37,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MeterCreateDialog extends Dialog {
-    public Activity activity;
-    public Button confirmCreateMeterButton, cancelCreateMeterButton;
-    public EditText serNumber;
-    public EditText password;
+    private Activity activity;
+    private Button confirmCreateMeterButton, cancelCreateMeterButton;
+    private EditText serNumber;
+    private EditText password;
     private MeterAdapter meterAdapter;
     private List<Meter> meterList;
     private Apartment apartment;
     private Spinner meterType;
+    private ImageButton barCodeButton;
 
     public MeterCreateDialog(@NonNull Activity activity, MeterAdapter meterAdapter, List<Meter> meterList, Apartment apartment) {
         super(activity);
@@ -47,6 +55,7 @@ public class MeterCreateDialog extends Dialog {
         this.apartment = apartment;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +68,7 @@ public class MeterCreateDialog extends Dialog {
         meterType = findViewById(R.id.meterTypeCreateDialog);
         serNumber = findViewById(R.id.meterSerNumberCreateDialog);
         password = findViewById(R.id.meterPasswordCreateDialog);
+        barCodeButton = findViewById(R.id.barCodeButton);
 
         ArrayAdapter<?> adapter = ArrayAdapter.createFromResource(getContext(), R.array.meter_type_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -111,6 +121,28 @@ public class MeterCreateDialog extends Dialog {
                 });
             }
         });
+
+        barCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scan();
+            }
+        });
+
+        barCodeButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return Utils.changeOtherButtonColor(view, motionEvent, activity.getApplicationContext());
+            }
+        });
     }
 
+    public void scan() {
+        IntentIntegrator intentIntegrator = new IntentIntegrator(activity);
+        intentIntegrator.initiateScan();
+    }
+
+    public void setSerNumber(String serNumber) {
+        this.serNumber.setText(serNumber);
+    }
 }

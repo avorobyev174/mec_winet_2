@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,9 +24,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SectionCreateDialog extends Dialog {
-    public Activity activity;
-    public Button createSectionButton, cancelCreateSectionButton;
-    public EditText sectionNumber;
+    private Activity activity;
+    private Button createSectionButton, cancelCreateSectionButton;
+    private EditText sectionNumber;
+    private TextView sectionLabel;
     private SectionAdapter sectionAdapter;
     private List<Section> sectionList;
     private House house;
@@ -49,7 +51,8 @@ public class SectionCreateDialog extends Dialog {
         cancelCreateSectionButton = findViewById(R.id.cancelCreateButton);
 
         sectionNumber = findViewById(R.id.objectNumber);
-        sectionNumber.setHint("Номер подьезда");
+        sectionLabel = findViewById(R.id.objectNumberLabel);
+        sectionLabel.setText("Номер подьезда");
 
         cancelCreateSectionButton.setOnClickListener(new View.OnClickListener() {
             @Override

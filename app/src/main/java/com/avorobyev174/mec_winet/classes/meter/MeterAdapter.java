@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.avorobyev174.mec_winet.R;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentDeleteDialog;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class MeterAdapter extends ArrayAdapter<Meter> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Meter meter = meterList.get(position);
-        convertView = inflater.inflate(R.layout.simple_list_item_view, null, false);
+        convertView = inflater.inflate(R.layout.meter_list_item_view, null, false);
         final ViewHolder viewHolder = new ViewHolder(convertView, meter);
         convertView.setTag(viewHolder);
 
@@ -47,17 +46,20 @@ public class MeterAdapter extends ArrayAdapter<Meter> {
     }
 
     private class ViewHolder {
-        public TextView meterTitle;
+        public TextView meterType, meterSerNumber;
         public ImageButton deleteMeterButton;
         private Meter meter;
 
+        @SuppressLint("ClickableViewAccessibility")
         private ViewHolder(View rootView, Meter meter) {
             this.meter = meter;
 
-            meterTitle = rootView.findViewById(R.id.list_item_title);
-            deleteMeterButton = rootView.findViewById(R.id.deleteItemButton);
+            meterType = rootView.findViewById(R.id.meterTypeItem);
+            meterSerNumber = rootView.findViewById(R.id.meterSerNumberItem);
+            deleteMeterButton = rootView.findViewById(R.id.meterDeleteItemButton);
 
-            meterTitle.setText(this.meter.getSerNumber());
+            meterType.setText(Utils.getMeterTypeTitle(meter.getType()));
+            meterSerNumber.setText(meter.getSerNumber());
 
             deleteMeterButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override

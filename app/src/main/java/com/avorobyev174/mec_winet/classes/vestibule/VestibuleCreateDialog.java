@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ public class VestibuleCreateDialog extends Dialog {
     public Activity activity;
     public Button confirmCreateFloorButton, cancelCreateFloorButton;
     public EditText vestibuleNumber;
+    private TextView vestibuleLabel;
     private VestibuleAdapter vestibuleAdapter;
     private List<Vestibule> vestibuleList;
     private Floor floor;
@@ -49,7 +51,8 @@ public class VestibuleCreateDialog extends Dialog {
         cancelCreateFloorButton = findViewById(R.id.cancelCreateButton);
 
         vestibuleNumber = findViewById(R.id.objectNumber);
-        vestibuleNumber.setHint("Номер тамбура");
+        vestibuleLabel = findViewById(R.id.objectNumberLabel);
+        vestibuleLabel.setText("Номер тамбура");
 
         cancelCreateFloorButton.setOnClickListener(new View.OnClickListener() {
             @Override

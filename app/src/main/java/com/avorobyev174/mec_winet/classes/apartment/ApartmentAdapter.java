@@ -54,7 +54,7 @@ public class ApartmentAdapter extends ArrayAdapter<Apartment> {
             this.apartment = apartment;
 
             apartmentTitle = rootView.findViewById(R.id.list_item_title);
-            deleteApartmentButton = rootView.findViewById(R.id.deleteItemButton);
+            deleteApartmentButton = rootView.findViewById(R.id.winetDeleteItemButton);
 
             apartmentTitle.setText(this.apartment.getFullApartmentDesc());
 

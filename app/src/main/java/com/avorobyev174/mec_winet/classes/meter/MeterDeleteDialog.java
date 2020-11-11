@@ -53,7 +53,7 @@ public class MeterDeleteDialog extends Dialog {
 
         meterDeleteTitle = findViewById(R.id.deleteDialogTitle);
 
-        meterDeleteTitle.setText("Вы хотите удалить " + meter.getSerNumber() + " ?");
+        meterDeleteTitle.setText("Вы хотите удалить счетчик \"" + Utils.getMeterTypeTitle(meter.getType()) + "\" с серийным номером " + meter.getSerNumber() + " ?");
 
         cancelDeleteMeterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +76,7 @@ public class MeterDeleteDialog extends Dialog {
                         Log.e("delete", "result " + response.body().getSuccess());
 
                         meterList.remove(meter);
-                        Toast.makeText(getContext(), "Счетчик " + meter.getSerNumber() + "\" удален из списка", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Счетчик \"" + Utils.getMeterTypeTitle(meter.getType()) + "\" с серийным номером " + meter.getSerNumber() + " удален из списка", Toast.LENGTH_SHORT).show();
                         meterAdapter.notifyDataSetChanged();
                         dismiss();
                     }

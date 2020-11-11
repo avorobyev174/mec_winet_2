@@ -7,14 +7,35 @@
     android:orientation="vertical">
 
 
+    <TextView
+        android:id="@+id/streetLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Улица"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/include" />
+
     <EditText
         android:id="@+id/street"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:ems="10"
-        android:hint="Улица"
         android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/streetNumberLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Номер дома"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/include" />
 
     <EditText
         android:id="@+id/streetNumber"
@@ -22,8 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Номер дома" />
+        android:inputType="textPersonName" />
 
     <LinearLayout
         android:layout_width="wrap_content"

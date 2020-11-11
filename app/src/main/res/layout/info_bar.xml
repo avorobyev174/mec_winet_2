@@ -49,7 +49,7 @@
                     android:layout_marginBottom="2dp"
                     android:gravity="center_horizontal|left|center_vertical"
                     android:text="Информация"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"

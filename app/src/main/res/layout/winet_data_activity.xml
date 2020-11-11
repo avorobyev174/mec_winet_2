@@ -26,13 +26,44 @@ tools:context=".classes.floor.FloorActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:text="Тип вайнет:"
-        android:textSize="18sp"
+        android:text="Тип вайнет"
+        android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <TextView
+        android:id="@+id/winetSerNumberLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Серийный номер"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/winetType" />
+
+    <TextView
+        android:id="@+id/winetCommentLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:text="Комментарий"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Spinner
         android:id="@+id/winetType"
@@ -50,13 +81,12 @@ tools:context=".classes.floor.FloorActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/winetType">
+        app:layout_constraintTop_toBottomOf="@+id/winetSerNumberLabel">
 
         <EditText
             android:id="@+id/winetSerNumber"
@@ -69,7 +99,6 @@ tools:context=".classes.floor.FloorActivity">
             android:layout_marginRight="0dp"
             android:layout_weight="8"
             android:ems="10"
-            android:hint="Серийный номер"
             android:inputType="number"
             android:textSize="24sp" />
 
@@ -91,65 +120,38 @@ tools:context=".classes.floor.FloorActivity">
         android:layout_height="60dp"
         android:layout_margin="5dp"
         android:ems="10"
-        android:hint="Комментарий"
         android:inputType="text"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/winetCommentLabel" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <TextView
+        android:id="@+id/apartmentListLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:background="@drawable/custom"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="8"
+        android:text="Список опрашиваемых обьектов"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_max="300dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/winetComment">
+        app:layout_constraintTop_toBottomOf="@+id/winetComment" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            tools:layout_editor_absoluteX="-4dp">
-
-            <TextView
-                android:id="@+id/apartmentListLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:text="Список опрашиваемых обьектов:"
-                android:textSize="25sp" />
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/addApartmentButton"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="70dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:backgroundTint="@android:color/transparent"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                android:tint="@color/green"-->
-<!--                app:srcCompat="@drawable/plus_icon2" />-->
-
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/apartmentList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1" />
-
-    </LinearLayout>
+    <ListView
+        android:id="@+id/apartmentList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="0.1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apartmentListLabel" />
 
     <ProgressBar
         android:id="@+id/progressBar"

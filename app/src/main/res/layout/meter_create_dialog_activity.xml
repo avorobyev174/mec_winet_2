@@ -7,42 +7,76 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/meterTypeLabel"
+        android:id="@+id/meterTypeLabelCreateDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:text="Тип счетчика:"
-        android:textSize="18sp"
+        android:text="Тип счетчика"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@+id/include" />
 
     <Spinner
         android:id="@+id/meterTypeCreateDialog"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="5dp"
+        android:layout_height="60dp"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp" />
 
-    <EditText
-        android:id="@+id/meterSerNumberCreateDialog"
+    <TextView
+        android:id="@+id/meterSerNumberLabelCreateDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:ems="10"
-        android:hint="Серийный номер"
-        android:inputType="number"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Серийный номер"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/include" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/meterSerNumberCreateDialog"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="8"
+            android:ems="10"
+            android:inputType="number" />
+
+        <ImageButton
+            android:id="@+id/barCodeButton"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:tint="@color/grey"
+            app:srcCompat="@drawable/barcode_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/meterPasswordLabelCreateDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:text="Пароль"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/include" />
 
     <EditText
         android:id="@+id/meterPasswordCreateDialog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
         android:ems="10"
-        android:hint="Пароль"
         android:inputType="number" />
 
     <LinearLayout

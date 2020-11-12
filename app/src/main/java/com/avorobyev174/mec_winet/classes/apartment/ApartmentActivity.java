@@ -2,34 +2,27 @@ package com.avorobyev174.mec_winet.classes.apartment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.BoringLayout;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Entity;
-import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.common.InfoBar;
 import com.avorobyev174.mec_winet.classes.meter.Meter;
 import com.avorobyev174.mec_winet.classes.meter.MeterActivity;
 import com.avorobyev174.mec_winet.classes.meter.MeterAdapter;
 import com.avorobyev174.mec_winet.classes.meter.MeterCreateDialog;
 import com.avorobyev174.mec_winet.classes.meter.MeterInfoResponse;
 import com.avorobyev174.mec_winet.classes.meter.MetertInfo;
-import com.avorobyev174.mec_winet.classes.section.SectionActivity;
-import com.avorobyev174.mec_winet.classes.winet.Winet;
+import com.avorobyev174.mec_winet.classes.winetData.WinetData;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -46,7 +39,6 @@ public class ApartmentActivity extends Entity {
     private ListView meterListView;
     private MeterAdapter adapter;
     private List<Meter> meterList;
-    private TextView infoBar;
     private ProgressBar progressBar;
     private Apartment apartment;
     private MeterCreateDialog meterCreateDialog;
@@ -66,16 +58,11 @@ public class ApartmentActivity extends Entity {
         initNavMenu(this, WinetDataActivity.class, apartment.getWinet());
 
         meterList = new ArrayList<>();
-        infoBar = findViewById(R.id.info_bar);
         meterListView = findViewById(R.id.meterListView);
         progressBar = findViewById(R.id.progressBar);
 
-        infoBar.setText(apartment.getWinet().getVestibule().getFloor().getSection().getHouse().getFullStreetName() + " → "
-                        + apartment.getWinet().getVestibule().getFloor().getSection().getShortNumber() + " → "
-                        + apartment.getWinet().getVestibule().getFloor().getShortNumber() + " → "
-                        + apartment.getWinet().getVestibule().getShortNumber() + " → "
-                        + apartment.getWinet().getSerNumber() + " → "
-                        + apartment.getFullApartmentDesc());
+        InfoBar.init(this);
+        InfoBar.changeInfoBarData(apartment);
 
         adapter = new MeterAdapter(this, R.layout.simple_list_item_view, meterList, getLayoutInflater());
         meterListView.setAdapter(adapter);
@@ -108,7 +95,7 @@ public class ApartmentActivity extends Entity {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " счетчиков", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " счетчиков", Toast.LENGTH_SHORT).show();
             }
 
             @Override

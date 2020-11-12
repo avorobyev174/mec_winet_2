@@ -1,12 +1,33 @@
 package com.avorobyev174.mec_winet.classes.common;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.apartment.Apartment;
+import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
+import com.avorobyev174.mec_winet.classes.floor.Floor;
+import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
+import com.avorobyev174.mec_winet.classes.house.House;
+import com.avorobyev174.mec_winet.classes.house.HouseActivity;
+import com.avorobyev174.mec_winet.classes.meter.Meter;
+import com.avorobyev174.mec_winet.classes.meter.MeterActivity;
+import com.avorobyev174.mec_winet.classes.section.Section;
+import com.avorobyev174.mec_winet.classes.section.SectionActivity;
+import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
+import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
+import com.avorobyev174.mec_winet.classes.winet.Winet;
+import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
+import com.avorobyev174.mec_winet.classes.winetData.WinetData;
+import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
+
+import java.io.Serializable;
 
 public class Utils {
 
@@ -77,4 +98,26 @@ public class Utils {
             default: return 0;
         }
     }
+
+    public static Class getActivityClassByEntity(Serializable moveEntity) {
+        if (moveEntity == null) {
+            return HouseActivity.class;
+        } else if (moveEntity.getClass().equals(House.class)) {
+            return SectionActivity.class;
+        } else if (moveEntity.getClass().equals(Section.class)) {
+            return FloorActivity.class;
+        } else if (moveEntity.getClass().equals(Floor.class)) {
+            return VestibuleActivity.class;
+        } else if (moveEntity.getClass().equals(Vestibule.class)) {
+            return WinetActivity.class;
+        } else if (moveEntity.getClass().equals(Winet.class)) {
+            return ApartmentActivity.class;
+        } else if (moveEntity.getClass().equals(WinetData.class)) {
+            return WinetDataActivity.class;
+        } else if (moveEntity.getClass().equals(Apartment.class)) {
+            return ApartmentActivity.class;
+        }
+        return null;
+    }
+
 }

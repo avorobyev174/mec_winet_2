@@ -7,11 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Entity;
+import com.avorobyev174.mec_winet.classes.common.InfoBar;
+import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.section.SectionActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 
@@ -29,7 +30,6 @@ public class HouseActivity extends Entity {
     private ListView housesListView;
     private HouseAdapter adapter;
     private List<House> houseList;
-    private TextView infoBar;
     private ProgressBar progressBar;
 
     @Override
@@ -45,10 +45,11 @@ public class HouseActivity extends Entity {
         initNavMenu(this, null, null);
         houseList = new ArrayList<>();
         housesListView = findViewById(R.id.houses_list_view);
-        infoBar = findViewById(R.id.info_bar);
         progressBar  = findViewById(R.id.progressBar);
 
-        infoBar.setText(R.string.houses_list);
+        InfoBar.init(this);
+        InfoBar.changeInfoBarData(null);
+        //Utils.changeInfoBarData(this,null);
 
         adapter = new HouseAdapter(this, R.layout.simple_list_item_view, houseList, getLayoutInflater());
         housesListView.setAdapter(adapter);
@@ -87,7 +88,7 @@ public class HouseActivity extends Entity {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " домов", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " домов", Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -64,6 +64,11 @@ public class FloorCreateDialog extends Dialog {
         createFloorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (floorNumber.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Введите номер этажа", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String floNumber = floorNumber.getText().toString();
                 for (Floor floor : floorList) {
                     if (Integer.parseInt(floNumber) == floor.getNumber()) {

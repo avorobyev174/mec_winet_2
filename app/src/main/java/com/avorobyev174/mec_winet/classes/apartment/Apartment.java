@@ -1,6 +1,7 @@
 package com.avorobyev174.mec_winet.classes.apartment;
 
 import com.avorobyev174.mec_winet.classes.winet.Winet;
+import com.avorobyev174.mec_winet.classes.winetData.WinetData;
 
 import java.io.Serializable;
 
@@ -17,6 +18,10 @@ public class Apartment implements Serializable {
 
     public Winet getWinet() {
         return winet;
+    }
+
+    public WinetData getWinetData() {
+        return winet.getWinetData();
     }
 
     public String getDescription() {

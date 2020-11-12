@@ -87,6 +87,17 @@ public class MeterCreateDialog extends Dialog {
             public void onClick(View view) {
                 String serialNumber =  serNumber.getText().toString();
                 String pass =  password.getText().toString();
+
+                if (serialNumber.isEmpty()) {
+                    Toast.makeText(getContext(), "Введите серийный номер", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (pass.isEmpty()) {
+                    Toast.makeText(getContext(), "Введите пароль", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String typeStr = meterType.getSelectedItem().toString();
                 int type = Utils.getMeterType(typeStr);
                 for (Meter meter : meterList) {

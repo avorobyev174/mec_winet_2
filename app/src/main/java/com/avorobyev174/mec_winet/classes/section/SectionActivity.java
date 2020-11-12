@@ -2,17 +2,17 @@ package com.avorobyev174.mec_winet.classes.section;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.avorobyev174.mec_winet.classes.common.Entity;
+import com.avorobyev174.mec_winet.classes.common.InfoBar;
+import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
@@ -32,7 +32,6 @@ public class SectionActivity extends Entity {
     private SectionAdapter adapter;
     private List<Section> sectionList;
     private House house;
-    private TextView infoBar;
     private ProgressBar progressBar;
 
     @Override
@@ -51,10 +50,11 @@ public class SectionActivity extends Entity {
 
         sectionList = new ArrayList<>();
         sectionListView = findViewById(R.id.sections_list_view);
-        infoBar = findViewById(R.id.info_bar);
         progressBar  = findViewById(R.id.progressBar);
 
-        infoBar.setText(house.getFullStreetName());
+        //Utils.changeInfoBarData(this, house);
+        InfoBar.init(this);
+        InfoBar.changeInfoBarData(house);
 
         adapter = new SectionAdapter(this, R.layout.simple_list_item_view, sectionList, getLayoutInflater());
         sectionListView.setAdapter(adapter);
@@ -87,7 +87,7 @@ public class SectionActivity extends Entity {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " подьездов", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " подьездов", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -103,19 +103,4 @@ public class SectionActivity extends Entity {
         SectionCreateDialog houseCreateDialog = new SectionCreateDialog(this, adapter,  sectionList, house);
         houseCreateDialog.show();
     }
-
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-//            switch (keyCode) {
-//                case KeyEvent.KEYCODE_BACK:
-//                    Log.e("back","back");
-//                    Intent intent = new Intent(SectionActivity.this, HouseActivity.class);
-//                    startActivity(intent);
-//                    return true;
-//            }
-//
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
 }

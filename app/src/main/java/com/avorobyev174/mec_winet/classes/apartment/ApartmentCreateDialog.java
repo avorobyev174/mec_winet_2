@@ -77,7 +77,7 @@ public class ApartmentCreateDialog extends Dialog {
                     descriptionLabel.setText("Номер квартиры");
                 } else {
                     description.setInputType(InputType.TYPE_CLASS_TEXT);
-                    descriptionLabel.setText("Название");
+                    descriptionLabel.setText("Название обекта");
                 }
             }
 
@@ -98,6 +98,11 @@ public class ApartmentCreateDialog extends Dialog {
         confirmCreateApartmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (description.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Введите данные об объекте", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String apartDesc =  description.getText().toString();
                 String apartType = (apartmentType.getSelectedItem().toString()).equals(getContext().getResources().getString(R.string.apartment_type_phizical)) ? "1" : "2";
                 for (Apartment apartment : apartmentList) {

@@ -6,6 +6,7 @@ import com.avorobyev174.mec_winet.classes.floor.Floor;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.section.Section;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
+import com.avorobyev174.mec_winet.classes.winetData.WinetData;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -38,6 +39,10 @@ public class Winet implements Serializable {
 
     public String getSerNumber() {
         return serNumber;
+    }
+
+    public WinetData getWinetData() {
+        return new WinetData(this);
     }
 
     public Vestibule getVestibule() {

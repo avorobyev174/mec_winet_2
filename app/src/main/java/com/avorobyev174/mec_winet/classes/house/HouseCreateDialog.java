@@ -62,7 +62,18 @@ public class HouseCreateDialog extends Dialog {
         createHouseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (street.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Введите улицу", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (streetNumber.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Введите номер дома", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String houseFullName = street.getText().toString() + " " + streetNumber.getText().toString();
+
                 for (House house : houseList) {
                     if (houseFullName.equals(house.getFullStreetName())) {
                         Toast.makeText(getContext(), "Дом \"" + houseFullName + "\" уже существует в списке", Toast.LENGTH_SHORT).show();

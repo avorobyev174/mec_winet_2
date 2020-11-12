@@ -64,6 +64,11 @@ public class SectionCreateDialog extends Dialog {
         createSectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (sectionNumber.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Введите номер подъезда", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String secNumber = sectionNumber.getText().toString();
                 for (Section section : sectionList) {
                     if (Integer.parseInt(secNumber) == section.getNumber()) {

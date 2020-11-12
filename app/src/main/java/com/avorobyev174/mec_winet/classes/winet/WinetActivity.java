@@ -1,28 +1,19 @@
 package com.avorobyev174.mec_winet.classes.winet;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Entity;
-import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.floor.Floor;
-import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
-import com.avorobyev174.mec_winet.classes.section.SectionActivity;
+import com.avorobyev174.mec_winet.classes.common.InfoBar;
 import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
@@ -42,7 +33,6 @@ public class WinetActivity extends Entity {
     private ListView winetListView;
     private WinetAdapter adapter;
     private List<Winet> winetList;
-    private TextView infoBar;
     private ProgressBar progressBar;
     private Vestibule vestibule;
     private WinetCreateDialog winetCreateDialog;
@@ -63,13 +53,10 @@ public class WinetActivity extends Entity {
 
         winetList = new ArrayList<>();
         winetListView = findViewById(R.id.winet_list_view);
-        infoBar = findViewById(R.id.info_bar);
         progressBar = findViewById(R.id.progressBar);
 
-        infoBar.setText(vestibule.getFloor().getSection().getHouse().getFullStreetName() + " → "
-                        + vestibule.getFloor().getSection().getShortNumber() + " → "
-                        + vestibule.getFloor().getShortNumber() + " → "
-                        + vestibule.getShortNumber());
+        InfoBar.init(this);
+        InfoBar.changeInfoBarData(vestibule);
 
         adapter = new WinetAdapter(this, R.layout.simple_list_item_view, winetList, getLayoutInflater());
         winetListView.setAdapter(adapter);
@@ -103,7 +90,7 @@ public class WinetActivity extends Entity {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " вайнет", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Загружено " + response.body().getResult().size() + " вайнет", Toast.LENGTH_SHORT).show();
             }
 
             @Override

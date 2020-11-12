@@ -25,6 +25,7 @@ import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentCreateDialog;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Entity;
+import com.avorobyev174.mec_winet.classes.common.InfoBar;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
@@ -47,7 +48,6 @@ import retrofit2.Response;
 public class WinetDataActivity extends Entity {
     private ApartmentAdapter apartmentAdapter;
     private List<Apartment> apartmentList;
-    private TextView infoBar;
     private ProgressBar progressBar;
     private Spinner winetTypeSpinner;
     private EditText serNumberInput, commentInput;
@@ -74,17 +74,14 @@ public class WinetDataActivity extends Entity {
 
         apartmentList = new ArrayList<>();
         apartmentListView = findViewById(R.id.apartmentList);
-        infoBar = findViewById(R.id.info_bar);
         progressBar  = findViewById(R.id.progressBar);
         winetTypeSpinner = findViewById(R.id.winetType);
         serNumberInput = findViewById(R.id.winetSerNumber);
         commentInput = findViewById(R.id.winetComment);
         barCodeButton = findViewById(R.id.barCodeButton);
 
-        infoBar.setText(winet.getVestibule().getFloor().getSection().getHouse().getFullStreetName() + " → "
-                        + winet.getVestibule().getFloor().getSection().getShortNumber() + " → "
-                        + winet.getVestibule().getFloor().getShortNumber() + " → "
-                        + winet.getVestibule().getShortNumber());
+        InfoBar.init(this);
+        InfoBar.changeInfoBarData(winet);
 
         adapter = ArrayAdapter.createFromResource(this, R.array.winet_type_array, R.xml.spinner_standard);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -149,7 +146,7 @@ public class WinetDataActivity extends Entity {
                 fillApartmentInfo();
 
 
-                Toast.makeText(getApplicationContext(), "Вайнет \"" + winetDataInfo.getSerNumber()+  "\" с типом \"" + winetDataInfo.getType() +  "\" загружен", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Вайнет \"" + winetDataInfo.getSerNumber()+  "\" с типом \"" + winetDataInfo.getType() +  "\" загружен", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -181,7 +178,7 @@ public class WinetDataActivity extends Entity {
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 apartmentAdapter.notifyDataSetChanged();
 
-                Toast.makeText(getApplicationContext(), "Список квартир загружен", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Список квартир загружен", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -193,6 +190,11 @@ public class WinetDataActivity extends Entity {
     }
 
     private void saveWinetData() {
+        if (serNumberInput.getText().toString().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Cерийный номер не должен быть пустым", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Call<WinetDataResponseWithParams> messages = ApiClient.getWinetApi().saveWinet("winet",
                                                                                               winet.getId(),
                                                                                               winetTypeSpinner.getSelectedItem().toString(),
@@ -208,7 +210,6 @@ public class WinetDataActivity extends Entity {
 
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
-                //saveApartmentInfo();
                 Toast.makeText(getApplicationContext(), "Вайнет \"" + winetDataParams.getSerNumber()+  "\" с типом \"" + winetDataParams.getType() +  "\" обновлен", Toast.LENGTH_SHORT).show();
             }
 

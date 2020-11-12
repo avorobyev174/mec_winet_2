@@ -80,6 +80,12 @@ public class WinetCreateDialog extends Dialog {
             public void onClick(View view) {
                 String winetSerNumber =  serNumber.getText().toString();
                 String winetType = type.getSelectedItem().toString();
+
+                if (winetSerNumber.isEmpty()) {
+                    Toast.makeText(getContext(), "Введите серийный номер", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 for (Winet winet : winetList) {
                     if (winetSerNumber.equals(winet.getSerNumber()) && winetType.equals(winet.getType())) {
                         Toast.makeText(getContext(), "Вайнет \"" + winetSerNumber +  "\" с типом \"" + winetType +  "\" уже существует в этом тамбуре", Toast.LENGTH_SHORT).show();

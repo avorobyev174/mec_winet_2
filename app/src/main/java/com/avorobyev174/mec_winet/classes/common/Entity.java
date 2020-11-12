@@ -2,7 +2,6 @@ package com.avorobyev174.mec_winet.classes.common;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,13 +31,13 @@ public abstract class Entity extends AppCompatActivity implements NavigationView
     private NavigationView navigationView;
     private Activity activity;
     private Class prevActivity;
-    private Object prevObject;
+    private Serializable prevEntity;
     private ImageButton navMenuButton;
 
-    public DrawerLayout initNavMenu (Activity activity, Class prevActivity, Object prevObject) {
+    public DrawerLayout initNavMenu (Activity activity, Class prevActivityClass, Serializable prevEntity) {
         this.activity = activity;
-        this.prevActivity = prevActivity;
-        this.prevObject = prevObject;
+        this.prevActivity = prevActivityClass;
+        this.prevEntity = prevEntity;
 
         navMenuButton = activity.findViewById(R.id.navMenuButton);
         drawerLayout = activity.findViewById(R.id.drawerLayout);
@@ -112,8 +111,8 @@ public abstract class Entity extends AppCompatActivity implements NavigationView
             switch (keyCode) {
                 case KeyEvent.KEYCODE_BACK:
                     Intent intent = new Intent(activity, prevActivity);
-                    if (prevObject != null) {
-                        intent.putExtra(prevObject.getClass().getSimpleName(), (Serializable) prevObject);
+                    if (prevEntity != null) {
+                        intent.putExtra(prevEntity.getClass().getSimpleName(), (Serializable) prevEntity);
                     }
                     startActivity(intent);
                     return true;

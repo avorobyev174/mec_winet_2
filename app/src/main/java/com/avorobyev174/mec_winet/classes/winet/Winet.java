@@ -30,6 +30,8 @@ public class Winet implements Serializable {
     private Vestibule vestibule;
     private String type;
     private String comment;
+    private String winetX;
+    private String winetY;
 
     public String getGuid() {
         return guid;
@@ -65,6 +67,22 @@ public class Winet implements Serializable {
         return getType() + "    " + getSerNumber();
     }
 
+    public String getWinetX() {
+        return winetX;
+    }
+
+    public void setWinetX(String winetX) {
+        this.winetX = winetX;
+    }
+
+    public String getWinetY() {
+        return winetY;
+    }
+
+    public void setWinetY(String winetY) {
+        this.winetY = winetY;
+    }
+
     public Winet(int id, String type, String serNumber, Vestibule vestibule) {
         this.id = id;
         this.serNumber = serNumber;
@@ -72,5 +90,6 @@ public class Winet implements Serializable {
         this.vestibule = vestibule;
         this.guid = UUID.randomUUID().toString();
     }
+
 
 }

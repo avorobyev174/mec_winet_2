@@ -1,6 +1,12 @@
 package com.avorobyev174.mec_winet.classes.winet;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,7 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Entity;
@@ -18,6 +26,10 @@ import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -103,7 +115,7 @@ public class WinetActivity extends Entity {
 
     @Override
     public void showObjCreateDialog() {
-        winetCreateDialog = new WinetCreateDialog(this, adapter,  winetList, vestibule);
+        winetCreateDialog = new WinetCreateDialog(this, adapter, winetList, vestibule);
         winetCreateDialog.show();
     }
 
@@ -119,4 +131,6 @@ public class WinetActivity extends Entity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }

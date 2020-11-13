@@ -35,7 +35,7 @@ tools:context=".classes.floor.FloorActivity">
             app:layout_constraintTop_toBottomOf="@+id/include" />
 
         <TextView
-            android:id="@+id/meterTypeLabelCreateDialog"
+            android:id="@+id/meterPasswordLabelCreateDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

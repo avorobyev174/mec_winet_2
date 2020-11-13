@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.InfoBar;
@@ -49,7 +51,6 @@ public class HouseActivity extends Entity {
 
         InfoBar.init(this);
         InfoBar.changeInfoBarData(null);
-        //Utils.changeInfoBarData(this,null);
 
         adapter = new HouseAdapter(this, R.layout.simple_list_item_view, houseList, getLayoutInflater());
         housesListView.setAdapter(adapter);

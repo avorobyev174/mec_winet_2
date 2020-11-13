@@ -19,6 +19,7 @@ import com.avorobyev174.mec_winet.classes.winetData.WinetData;
 
 import java.io.Serializable;
 
+@SuppressLint("StaticFieldLeak")
 public class InfoBar {
     private static TextView houseTextView;
     private static TextView sectionTextView;

@@ -1,9 +1,11 @@
 package com.avorobyev174.mec_winet.classes.winetData;
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,11 +16,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
@@ -26,14 +29,20 @@ import com.avorobyev174.mec_winet.classes.apartment.ApartmentCreateDialog;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.InfoBar;
+import com.avorobyev174.mec_winet.classes.common.SimpleDialog;
 import com.avorobyev174.mec_winet.classes.common.Utils;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
+import com.avorobyev174.mec_winet.classes.winet.WinetDeleteDialog;
 import com.avorobyev174.mec_winet.classes.winet.WinetInfo;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentAdapter;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentInfo;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentInfoResponse;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -45,16 +54,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class WinetDataActivity extends Entity {
+public class WinetDataActivity extends Entity implements View.OnClickListener {
+
+    private int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private ApartmentAdapter apartmentAdapter;
     private List<Apartment> apartmentList;
     private ProgressBar progressBar;
     private Spinner winetTypeSpinner;
-    private EditText serNumberInput, commentInput;
+    private EditText serNumberInput, commentInput, coordinateX, coordinateY;
     private ArrayAdapter<CharSequence> adapter;
-    private ImageButton barCodeButton;
+    private ImageButton barCodeButton, gpsButton;
     private ListView apartmentListView;
     private Winet winet;
+    private SimpleDialog changeCoordinatesDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +90,10 @@ public class WinetDataActivity extends Entity {
         winetTypeSpinner = findViewById(R.id.winetType);
         serNumberInput = findViewById(R.id.winetSerNumber);
         commentInput = findViewById(R.id.winetComment);
+        coordinateX = findViewById(R.id.winetCoordinateX);
+        coordinateY = findViewById(R.id.winetCoordinateY);
         barCodeButton = findViewById(R.id.barCodeButton);
+        gpsButton = findViewById(R.id.gpsButton);
 
         InfoBar.init(this);
         InfoBar.changeInfoBarData(winet);
@@ -93,8 +108,40 @@ public class WinetDataActivity extends Entity {
         initOnClick();
     }
 
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.confirmSimpleDialogButton) {
+            getCoordinates();
+            if (changeCoordinatesDialog != null) {
+                changeCoordinatesDialog.dismiss();
+            }
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     public void initOnClick() {
+        gpsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!coordinateX.getText().toString().isEmpty() || !coordinateY.getText().toString().isEmpty()) {
+                    changeCoordinatesDialog = new SimpleDialog(WinetDataActivity.this,
+                                                                            "Вы хотите изменить координаты?",
+                                                                            "изменить");
+                    changeCoordinatesDialog.show();
+                } else {
+                    getCoordinates();
+                }
+            }
+        });
+
+        gpsButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return Utils.changeOtherButtonColor(view, motionEvent, getApplicationContext());
+            }
+        });
+
         barCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +167,16 @@ public class WinetDataActivity extends Entity {
         });
     }
 
+    private void getCoordinates() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)  {
+            ActivityCompat.requestPermissions(WinetDataActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE_LOCATION_PERMISSION);
+        } else  {
+            getCurrentLocation();
+        }
+    }
+
     @Override
     public void saveObjData() {
         saveWinetData();
@@ -135,17 +192,17 @@ public class WinetDataActivity extends Entity {
                 Log.e("get winet info res", "success = " + response.body().getSuccess());
                 WinetInfo winetDataInfo = response.body().getResult().get(0);
                 Log.e("get winet info id", " = " + winetDataInfo.getId());
-                Log.e("get winet info comment", " = " + winetDataInfo.getComment());
+                Log.e("get winet info comment", " = " + winetDataInfo.getWinetX());
 
                 winetTypeSpinner.setSelection(adapter.getPosition(winetDataInfo.getType()));
                 serNumberInput.setText(winetDataInfo.getSerNumber());
                 commentInput.setText(winetDataInfo.getComment());
+                coordinateX.setText(winetDataInfo.getWinetX());
+                coordinateY.setText(winetDataInfo.getWinetY());
 
                 progressBar.setVisibility(ProgressBar.INVISIBLE);
                 adapter.notifyDataSetChanged();
                 fillApartmentInfo();
-
-
                 //Toast.makeText(getApplicationContext(), "Вайнет \"" + winetDataInfo.getSerNumber()+  "\" с типом \"" + winetDataInfo.getType() +  "\" загружен", Toast.LENGTH_SHORT).show();
             }
 
@@ -159,7 +216,7 @@ public class WinetDataActivity extends Entity {
 
     private void fillApartmentInfo() {
         Call<ApartmentInfoResponse> messages = ApiClient.getApartmentApi().getApartments(winet.getId());
-        //progressBar.setVisibility(ProgressBar.VISIBLE);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         messages.enqueue(new Callback<ApartmentInfoResponse>() {
             @Override
@@ -195,11 +252,15 @@ public class WinetDataActivity extends Entity {
             return;
         }
 
+        //Toast.makeText(getApplicationContext(), Utils.getWinetX(coordinates.getText().toString()) + " " + Utils.getWinetY(coordinates.getText().toString()), Toast.LENGTH_SHORT).show();
+
         Call<WinetDataResponseWithParams> messages = ApiClient.getWinetApi().saveWinet("winet",
-                                                                                              winet.getId(),
-                                                                                              winetTypeSpinner.getSelectedItem().toString(),
-                                                                                              serNumberInput.getText().toString(),
-                                                                                              commentInput.getText().toString());
+                                                                                        winet.getId(),
+                                                                                        winetTypeSpinner.getSelectedItem().toString(),
+                                                                                        serNumberInput.getText().toString(),
+                                                                                        commentInput.getText().toString(),
+                                                                                        coordinateX.getText().toString(),
+                                                                                        coordinateY.getText().toString());
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
         messages.enqueue(new Callback<WinetDataResponseWithParams>() {
@@ -243,5 +304,44 @@ public class WinetDataActivity extends Entity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
+            } else {
+                Toast.makeText(getApplicationContext(), "Доступ к локации не предоставлен", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getCurrentLocation() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationServices.getFusedLocationProviderClient(WinetDataActivity.this).requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                LocationServices.getFusedLocationProviderClient(WinetDataActivity.this).removeLocationUpdates(this);
+                if (locationResult != null && locationResult.getLocations().size() > 0) {
+                    int latestLocationIndex = locationResult.getLocations().size() - 1;
+                    double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                    double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                    coordinateX.setText(String.valueOf(latitude));
+                    coordinateY.setText(String.valueOf(longitude));
+                    Toast.makeText(getApplicationContext(), "Координаты получены", Toast.LENGTH_LONG).show();
+                }
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        }, Looper.getMainLooper());
     }
 }

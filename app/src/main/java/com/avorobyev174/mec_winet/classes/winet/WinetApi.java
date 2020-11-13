@@ -29,5 +29,8 @@ public interface WinetApi {
                                                 @Query("_id") int winetId,
                                                 @Query("winet_type") String type,
                                                 @Query("ser_number") String serNumber,
-                                                @Query("winet_comment") String comment);
+                                                @Query("winet_comment") String comment,
+                                                @Query("winet_x") String winetX,
+                                                @Query("winet_y") String winetY);
+
 }

@@ -1,10 +1,14 @@
 package com.avorobyev174.mec_winet.classes.meter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,6 +22,8 @@ import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.InfoBar;
 import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +36,7 @@ public class MeterActivity extends Entity {
     private EditText serNumberInput, passwordInput;
     private ArrayAdapter<CharSequence> adapter;
     private Meter meter;
+    private ImageButton barCodeButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class MeterActivity extends Entity {
         fillMeterInfo();
     }
 
-    @SuppressLint("ResourceType")
+    @SuppressLint({"ResourceType", "ClickableViewAccessibility"})
     private void init() {
         Bundle arguments = getIntent().getExtras();
         meter = (Meter) arguments.getSerializable(Meter.class.getSimpleName());
@@ -49,6 +56,7 @@ public class MeterActivity extends Entity {
         meterTypeSpinner = findViewById(R.id.meterType);
         serNumberInput = findViewById(R.id.meterSerNumber);
         passwordInput = findViewById(R.id.meterPassword);
+        barCodeButton = findViewById(R.id.barCodeButton);
 
         InfoBar.init(this);
         InfoBar.changeInfoBarData(meter);
@@ -56,6 +64,20 @@ public class MeterActivity extends Entity {
         adapter = ArrayAdapter.createFromResource(this, R.array.meter_type_array, R.xml.spinner_standard);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         meterTypeSpinner.setAdapter(adapter);
+
+        barCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scan();
+            }
+        });
+
+        barCodeButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return Utils.changeOtherButtonColor(view, motionEvent, getApplicationContext());
+            }
+        });
     }
 
     private void fillMeterInfo() {
@@ -129,6 +151,24 @@ public class MeterActivity extends Entity {
                 Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void scan() {
+        IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+        intentIntegrator.initiateScan();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if (intentResult != null) {
+            if (intentResult.getContents() != null) {
+                serNumberInput.setText(intentResult.getContents());
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }

@@ -24,6 +24,14 @@ public class WinetInfo {
     @Expose
     private String comment;
 
+    @SerializedName("winet_x")
+    @Expose
+    private String winetX;
+
+    @SerializedName("winet_y")
+    @Expose
+    private String winetY;
+
     public int getId() {
         return id;
     }
@@ -62,5 +70,21 @@ public class WinetInfo {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getWinetX() {
+        return winetX;
+    }
+
+    public void setWinetX(String winetX) {
+        this.winetX = winetX;
+    }
+
+    public String getWinetY() {
+        return winetY;
+    }
+
+    public void setWinetY(String winetY) {
+        this.winetY = winetY;
     }
 }

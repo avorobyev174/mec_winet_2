@@ -31,24 +31,22 @@ import java.io.Serializable;
 
 public class Utils {
 
-    public static boolean changeAddButtonColor(View view, MotionEvent motionEvent, Context context) {
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.dark_green),
-                    PorterDuff.Mode.SRC_ATOP);
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            // pointer goes up
-            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.green),
-                    PorterDuff.Mode.SRC_ATOP);
-        }
-        return false;
-    }
+//    public static boolean changeAddButtonColor(View view, MotionEvent motionEvent, Context context) {
+//        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+//            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.dark_green),
+//                    PorterDuff.Mode.SRC_ATOP);
+//        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+//            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.green),
+//                    PorterDuff.Mode.SRC_ATOP);
+//        }
+//        return false;
+//    }
 
     public static boolean changeOtherButtonColor(View view, MotionEvent motionEvent, Context context) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.black),
                     PorterDuff.Mode.SRC_ATOP);
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            // pointer goes up
             ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.grey),
                     PorterDuff.Mode.SRC_ATOP);
         }
@@ -60,7 +58,6 @@ public class Utils {
             ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.dark_red),
                     PorterDuff.Mode.SRC_ATOP);
         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            // pointer goes up
             ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.red),
                     PorterDuff.Mode.SRC_ATOP);
         }
@@ -82,7 +79,7 @@ public class Utils {
             case 3: return "Нева МТ 324";
             case 5: return "Меркурий 200.Х";
             case 9: return "Меркурий 23X";
-            case 11: return  "Меркурий 206";
+            case 11: return "Меркурий 206";
             default: return "неизвестно";
         }
     }
@@ -120,4 +117,21 @@ public class Utils {
         return null;
     }
 
+    public static String getWinetX(String str) {
+        if (str.isEmpty())
+            return "";
+
+        return str.substring(4, str.indexOf(";"));
+    }
+
+    public static String getWinetY(String str) {
+        if (str.isEmpty())
+            return "";
+
+        return str.substring(str.indexOf("Y = ") + 4);
+    }
+
+    public static String generateCoordinatesStr(String winetX, String winetY) {
+        return "X = " + winetX + "; Y = " + winetY;
+    }
 }

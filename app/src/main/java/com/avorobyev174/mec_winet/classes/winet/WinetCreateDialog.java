@@ -142,5 +142,4 @@ public class WinetCreateDialog extends Dialog {
     public void setSerNumber(String serNumber) {
         this.serNumber.setText(serNumber);
     }
-
 }

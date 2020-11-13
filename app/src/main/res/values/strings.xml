@@ -13,4 +13,6 @@
     <string name="comment_winet">Комментарий</string>
     <string name="apartment_type_phizical">Физ. лицо</string>
     <string name="apartment_type_commercial">Юр. лицо</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

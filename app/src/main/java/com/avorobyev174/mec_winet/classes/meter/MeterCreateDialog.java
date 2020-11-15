@@ -3,7 +3,6 @@ package com.avorobyev174.mec_winet.classes.meter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,18 +16,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentAdapter;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentParams;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentResponseWithParams;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
@@ -119,7 +112,7 @@ public class MeterCreateDialog extends Dialog {
                         Log.e("create meter response", "params meter number = " + meterParams.getSerNumber());
                         Log.e("create meter sql", response.body().getSql());
                         meterList.add(new Meter(meterId, meterParams.getMeterType(), meterParams.getSerNumber(), meterParams.getPassword(),apartment));
-                        Toast.makeText(getContext(), "Счетчик" + "\"" + meterParams.getSerNumber() +  "\" добавлен в список", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Счетчик " + "\"" + meterParams.getSerNumber() +  "\" добавлен в список", Toast.LENGTH_SHORT).show();
 
                         meterAdapter.notifyDataSetChanged();
                         dismiss();

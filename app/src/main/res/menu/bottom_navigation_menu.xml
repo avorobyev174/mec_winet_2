@@ -9,5 +9,8 @@
     <item android:title="Сохранить"
         android:id="@+id/menuSaveObject"
         android:icon="@drawable/save_icon_3"/>
-
+    <item
+        android:title="Назад"
+        android:id="@+id/menuBack"
+        android:icon="@drawable/ic_baseline_arrow_back_24"/>
 </menu>

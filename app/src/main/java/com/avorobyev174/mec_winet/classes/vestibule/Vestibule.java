@@ -1,12 +1,13 @@
 package com.avorobyev174.mec_winet.classes.vestibule;
 
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.floor.Floor;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.section.Section;
 
 import java.io.Serializable;
 
-public class Vestibule implements Serializable {
+public class Vestibule extends Entity implements Serializable {
     private int number;
     private Floor floor;
     private int id;
@@ -37,4 +38,8 @@ public class Vestibule implements Serializable {
         this.id = id;
     }
 
+    @Override
+    public Entity getParent() {
+        return floor;
+    }
 }

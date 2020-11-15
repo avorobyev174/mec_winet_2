@@ -2,6 +2,7 @@ package com.avorobyev174.mec_winet.classes.winet;
 
 import android.text.Editable;
 
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.floor.Floor;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.section.Section;
@@ -11,7 +12,7 @@ import com.avorobyev174.mec_winet.classes.winetData.WinetData;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class Winet implements Serializable {
+public class Winet extends Entity implements Serializable {
 
     public void setSerNumber(Editable serNumber) {
         this.serNumber = serNumber.toString();
@@ -91,5 +92,8 @@ public class Winet implements Serializable {
         this.guid = UUID.randomUUID().toString();
     }
 
-
+    @Override
+    public Entity getParent() {
+        return vestibule;
+    }
 }

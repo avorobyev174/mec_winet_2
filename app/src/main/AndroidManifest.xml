@@ -15,20 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/AddressActivityTheme">
         <activity
-            android:name=".classes.house.HouseActivity"
+            android:name=".classes.common.MainActivity"
             android:theme="@style/AddressActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".classes.section.SectionActivity" />
-        <activity android:name=".classes.floor.FloorActivity" />
-        <activity android:name=".classes.vestibule.VestibuleActivity" />
-        <activity android:name=".classes.winet.WinetActivity" />
-        <activity android:name=".classes.winetData.WinetDataActivity" />
-        <activity android:name=".classes.apartment.ApartmentActivity" />
-        <activity android:name=".classes.meter.MeterActivity" />
+<!--        <activity android:name=".classes.section.SectionActivity" />-->
     </application>
 
 </manifest>

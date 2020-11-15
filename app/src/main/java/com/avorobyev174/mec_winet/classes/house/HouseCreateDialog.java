@@ -2,22 +2,20 @@ package com.avorobyev174.mec_winet.classes.house;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
-import com.avorobyev174.mec_winet.classes.section.Section;
+import com.avorobyev174.mec_winet.classes.house.api.HouseParams;
+import com.avorobyev174.mec_winet.classes.house.api.HouseResponseWithParams;
 
 import java.util.List;
 
@@ -26,7 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HouseCreateDialog extends Dialog {
-    public Activity activity;
     public Button createHouseButton, cancelCreateHouseButton;
     public EditText street, streetNumber;
     private HouseAdapter houseAdapter;
@@ -34,7 +31,6 @@ public class HouseCreateDialog extends Dialog {
 
     public HouseCreateDialog(@NonNull Activity activity, HouseAdapter houseAdapter, List<House> houseList) {
         super(activity);
-        this.activity = activity;
         this.houseAdapter = houseAdapter;
         this.houseList = houseList;
     }

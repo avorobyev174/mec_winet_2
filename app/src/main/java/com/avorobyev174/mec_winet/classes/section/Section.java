@@ -1,10 +1,11 @@
 package com.avorobyev174.mec_winet.classes.section;
 
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.house.House;
 
 import java.io.Serializable;
 
-public class Section implements Serializable {
+public class Section extends Entity implements Serializable {
     private int id;
     private int number;
     private House house;
@@ -35,4 +36,8 @@ public class Section implements Serializable {
         this.house = house;
     }
 
+    @Override
+    public Entity getParent() {
+        return house;
+    }
 }

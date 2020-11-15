@@ -1,11 +1,12 @@
 package com.avorobyev174.mec_winet.classes.apartment;
 
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
 import com.avorobyev174.mec_winet.classes.winetData.WinetData;
 
 import java.io.Serializable;
 
-public class Apartment implements Serializable {
+public class Apartment extends Entity implements Serializable {
     private int id;
     private Winet winet;
     private String apartmentDesc;
@@ -69,4 +70,8 @@ public class Apartment implements Serializable {
         this.winet = winet;
     }
 
+    @Override
+    public Entity getParent() {
+        return winet;
+    }
 }

@@ -1,10 +1,11 @@
 package com.avorobyev174.mec_winet.classes.meter;
 
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
+import com.avorobyev174.mec_winet.classes.common.Entity;
 
 import java.io.Serializable;
 
-public class Meter implements Serializable {
+public class Meter extends Entity implements Serializable {
     private int id;
     private Apartment apartment;
     private String serNumber;
@@ -55,4 +56,8 @@ public class Meter implements Serializable {
         this.apartment = apartment;
     }
 
+    @Override
+    public Entity getParent() {
+        return apartment;
+    }
 }

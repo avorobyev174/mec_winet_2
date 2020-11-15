@@ -1,6 +1,5 @@
 package com.avorobyev174.mec_winet.classes.meter;
 
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -1,12 +1,12 @@
 package com.avorobyev174.mec_winet.classes.api;
 
-import com.avorobyev174.mec_winet.classes.floor.FloorApi;
-import com.avorobyev174.mec_winet.classes.house.HousesApi;
+import com.avorobyev174.mec_winet.classes.floor.api.FloorApi;
+import com.avorobyev174.mec_winet.classes.house.api.HousesApi;
 import com.avorobyev174.mec_winet.classes.meter.MeterApi;
-import com.avorobyev174.mec_winet.classes.section.SectionApi;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleApi;
-import com.avorobyev174.mec_winet.classes.winet.WinetApi;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentApi;
+import com.avorobyev174.mec_winet.classes.section.api.SectionApi;
+import com.avorobyev174.mec_winet.classes.vestibule.api.VestibuleApi;
+import com.avorobyev174.mec_winet.classes.winet.api.WinetApi;
+import com.avorobyev174.mec_winet.classes.apartment.api.ApartmentApi;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

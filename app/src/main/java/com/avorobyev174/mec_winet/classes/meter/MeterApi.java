@@ -1,9 +1,6 @@
 package com.avorobyev174.mec_winet.classes.meter;
 
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentInfoResponse;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentResponseWithParams;
 import com.avorobyev174.mec_winet.classes.api.SimpleResponse;
-import com.avorobyev174.mec_winet.classes.winetData.WinetDataResponseWithParams;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;

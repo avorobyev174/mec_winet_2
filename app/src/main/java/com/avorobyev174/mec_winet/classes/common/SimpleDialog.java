@@ -20,9 +20,9 @@ public class SimpleDialog extends Dialog {
     public Button confirmButton, cancelButton;
     public TextView conditionTextView;
 
-    public SimpleDialog(@NonNull Activity activity, String conditionTitle, String actionTitle) {
+    public SimpleDialog(@NonNull Activity activity, View.OnClickListener onClickListener, String conditionTitle, String actionTitle) {
         super(activity);
-        this.onClickListener = (View.OnClickListener)activity;
+        this.onClickListener = onClickListener;
         this.conditionTitle = conditionTitle;
         this.actionTitle = actionTitle;
     }

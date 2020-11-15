@@ -18,14 +18,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.avorobyev174.mec_winet.R;
+import com.avorobyev174.mec_winet.classes.apartment.api.ApartmentParams;
+import com.avorobyev174.mec_winet.classes.apartment.api.ApartmentResponseWithParams;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.house.House;
-import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
-import com.avorobyev174.mec_winet.classes.winet.WinetAdapter;
-import com.avorobyev174.mec_winet.classes.winet.WinetParams;
-import com.avorobyev174.mec_winet.classes.winet.WinetResponseWithParams;
 
 import java.util.List;
 

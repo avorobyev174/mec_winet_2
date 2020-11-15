@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.house.House;
+import com.avorobyev174.mec_winet.classes.section.api.SectionParams;
+import com.avorobyev174.mec_winet.classes.section.api.SectionResponseWithParams;
 
 import java.util.List;
 

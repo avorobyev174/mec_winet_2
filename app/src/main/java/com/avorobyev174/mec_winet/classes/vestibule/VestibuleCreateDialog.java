@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.floor.Floor;
+import com.avorobyev174.mec_winet.classes.vestibule.api.VestibuleParams;
+import com.avorobyev174.mec_winet.classes.vestibule.api.VestibuleResponseWithParams;
 
 import java.util.List;
 

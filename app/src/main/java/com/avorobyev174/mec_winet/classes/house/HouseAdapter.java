@@ -77,7 +77,7 @@ public class HouseAdapter extends ArrayAdapter<House> {
         }
 
         private void deleteHouse(View view) {
-            HouseDeleteDialog houseDeleteDialog = new HouseDeleteDialog((Activity) context, house, houseAdapter, houseList);
+            HouseDeleteDialog houseDeleteDialog = new HouseDeleteDialog((Activity)context, house, houseAdapter, houseList);
             houseDeleteDialog.show();
         }
     }

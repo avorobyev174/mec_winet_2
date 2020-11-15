@@ -1,8 +1,10 @@
 package com.avorobyev174.mec_winet.classes.house;
 
+import com.avorobyev174.mec_winet.classes.common.Entity;
+
 import java.io.Serializable;
 
-public class House implements Serializable {
+public class House extends Entity implements Serializable {
     private String street;
     private String streetNumber;
     private int id;
@@ -29,6 +31,4 @@ public class House implements Serializable {
         this.streetNumber = streetNumber;
         this.id = id;
     }
-
-
 }

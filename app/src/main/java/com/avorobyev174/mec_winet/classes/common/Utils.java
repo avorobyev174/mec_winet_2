@@ -1,46 +1,33 @@
 package com.avorobyev174.mec_winet.classes.common;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
-import com.avorobyev174.mec_winet.classes.apartment.ApartmentActivity;
+import com.avorobyev174.mec_winet.classes.apartment.ApartmentFragment;
 import com.avorobyev174.mec_winet.classes.floor.Floor;
-import com.avorobyev174.mec_winet.classes.floor.FloorActivity;
+import com.avorobyev174.mec_winet.classes.floor.FloorFragment;
 import com.avorobyev174.mec_winet.classes.house.House;
-import com.avorobyev174.mec_winet.classes.house.HouseActivity;
-import com.avorobyev174.mec_winet.classes.meter.Meter;
-import com.avorobyev174.mec_winet.classes.meter.MeterActivity;
+import com.avorobyev174.mec_winet.classes.house.HouseFragment;
 import com.avorobyev174.mec_winet.classes.section.Section;
-import com.avorobyev174.mec_winet.classes.section.SectionActivity;
+import com.avorobyev174.mec_winet.classes.section.SectionFragment;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleActivity;
+import com.avorobyev174.mec_winet.classes.vestibule.VestibuleFragment;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
-import com.avorobyev174.mec_winet.classes.winet.WinetActivity;
+import com.avorobyev174.mec_winet.classes.winet.WinetFragment;
 import com.avorobyev174.mec_winet.classes.winetData.WinetData;
-import com.avorobyev174.mec_winet.classes.winetData.WinetDataActivity;
-
-import java.io.Serializable;
+import com.avorobyev174.mec_winet.classes.winetData.WinetDataFragment;
 
 public class Utils {
-
-//    public static boolean changeAddButtonColor(View view, MotionEvent motionEvent, Context context) {
-//        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.dark_green),
-//                    PorterDuff.Mode.SRC_ATOP);
-//        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//            ((ImageView)view).setColorFilter(context.getResources().getColor(R.color.green),
-//                    PorterDuff.Mode.SRC_ATOP);
-//        }
-//        return false;
-//    }
 
     public static boolean changeOtherButtonColor(View view, MotionEvent motionEvent, Context context) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -51,6 +38,15 @@ public class Utils {
                     PorterDuff.Mode.SRC_ATOP);
         }
         return false;
+    }
+
+    public static boolean changeOtherTextViewColor(View view, MotionEvent motionEvent, Context context) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            ((TextView)view).setTextColor(context.getResources().getColor(R.color.black));
+        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            ((TextView)view).setTextColor(context.getResources().getColor(R.color.grey));
+        }
+        return true;
     }
 
     public static boolean changeRemoveButtonColor(View view, MotionEvent motionEvent, Context context) {
@@ -96,42 +92,24 @@ public class Utils {
         }
     }
 
-    public static Class getActivityClassByEntity(Serializable moveEntity) {
+    public static EntityFragment getFragmentByEntity(Entity moveEntity, ProgressBar progressBar, FragmentManager fragmentManager) {
         if (moveEntity == null) {
-            return HouseActivity.class;
+            return HouseFragment.newInstance(progressBar, fragmentManager);
         } else if (moveEntity.getClass().equals(House.class)) {
-            return SectionActivity.class;
+            return SectionFragment.newInstance(progressBar, fragmentManager);
         } else if (moveEntity.getClass().equals(Section.class)) {
-            return FloorActivity.class;
+            return FloorFragment.newInstance(progressBar, fragmentManager);
         } else if (moveEntity.getClass().equals(Floor.class)) {
-            return VestibuleActivity.class;
+            return VestibuleFragment.newInstance(progressBar, fragmentManager);
         } else if (moveEntity.getClass().equals(Vestibule.class)) {
-            return WinetActivity.class;
+            return WinetFragment.newInstance(progressBar, fragmentManager);
         } else if (moveEntity.getClass().equals(Winet.class)) {
-            return ApartmentActivity.class;
+            return ApartmentFragment.newInstance(progressBar, fragmentManager);
         } else if (moveEntity.getClass().equals(WinetData.class)) {
-            return WinetDataActivity.class;
+            return WinetDataFragment.newInstance(progressBar, fragmentManager);
         } else if (moveEntity.getClass().equals(Apartment.class)) {
-            return ApartmentActivity.class;
+            return ApartmentFragment.newInstance(progressBar, fragmentManager);
         }
         return null;
-    }
-
-    public static String getWinetX(String str) {
-        if (str.isEmpty())
-            return "";
-
-        return str.substring(4, str.indexOf(";"));
-    }
-
-    public static String getWinetY(String str) {
-        if (str.isEmpty())
-            return "";
-
-        return str.substring(str.indexOf("Y = ") + 4);
-    }
-
-    public static String generateCoordinatesStr(String winetX, String winetY) {
-        return "X = " + winetX + "; Y = " + winetY;
     }
 }

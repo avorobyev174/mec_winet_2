@@ -1,11 +1,12 @@
 package com.avorobyev174.mec_winet.classes.floor;
 
+import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.section.Section;
 
 import java.io.Serializable;
 
-public class Floor implements Serializable {
+public class Floor extends Entity implements Serializable {
     private int id;
     private int number;
 
@@ -37,4 +38,8 @@ public class Floor implements Serializable {
         this.section = section;
     }
 
+    @Override
+    public Entity getParent() {
+        return section;
+    }
 }

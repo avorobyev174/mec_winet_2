@@ -8,11 +8,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,17 +20,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.avorobyev174.mec_winet.R;
-import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 import com.avorobyev174.mec_winet.classes.apartment.ApartmentFragment;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.EntityFragment;
 import com.avorobyev174.mec_winet.classes.common.Utils;
-import com.avorobyev174.mec_winet.classes.winetData.WinetDataFragment;
+import com.avorobyev174.mec_winet.classes.meter.api.MeterInfoResponse;
+import com.avorobyev174.mec_winet.classes.meter.api.MeterParams;
+import com.avorobyev174.mec_winet.classes.meter.api.MeterResponseWithParams;
+import com.avorobyev174.mec_winet.classes.meter.api.MetertInfo;
 import com.google.zxing.integration.android.IntentIntegrator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

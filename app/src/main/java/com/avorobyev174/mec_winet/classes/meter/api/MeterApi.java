@@ -1,4 +1,4 @@
-package com.avorobyev174.mec_winet.classes.meter;
+package com.avorobyev174.mec_winet.classes.meter.api;
 
 import com.avorobyev174.mec_winet.classes.api.SimpleResponse;
 

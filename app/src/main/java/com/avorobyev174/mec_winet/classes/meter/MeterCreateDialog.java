@@ -21,6 +21,8 @@ import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.apartment.Apartment;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
 import com.avorobyev174.mec_winet.classes.common.Utils;
+import com.avorobyev174.mec_winet.classes.meter.api.MeterParams;
+import com.avorobyev174.mec_winet.classes.meter.api.MeterResponseWithParams;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.util.List;

@@ -24,15 +24,8 @@ import com.avorobyev174.mec_winet.classes.meter.Meter;
 import com.avorobyev174.mec_winet.classes.meter.MeterAdapter;
 import com.avorobyev174.mec_winet.classes.meter.MeterCreateDialog;
 import com.avorobyev174.mec_winet.classes.meter.MeterFragment;
-import com.avorobyev174.mec_winet.classes.meter.MeterInfoResponse;
-import com.avorobyev174.mec_winet.classes.meter.MetertInfo;
-import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
-import com.avorobyev174.mec_winet.classes.vestibule.VestibuleFragment;
-import com.avorobyev174.mec_winet.classes.winet.Winet;
-import com.avorobyev174.mec_winet.classes.winet.WinetAdapter;
-import com.avorobyev174.mec_winet.classes.winet.WinetCreateDialog;
-import com.avorobyev174.mec_winet.classes.winet.api.WinetInfo;
-import com.avorobyev174.mec_winet.classes.winet.api.WinetInfoResponse;
+import com.avorobyev174.mec_winet.classes.meter.api.MeterInfoResponse;
+import com.avorobyev174.mec_winet.classes.meter.api.MetertInfo;
 import com.avorobyev174.mec_winet.classes.winetData.WinetDataFragment;
 
 import java.util.ArrayList;

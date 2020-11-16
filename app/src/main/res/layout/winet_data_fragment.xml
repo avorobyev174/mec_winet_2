@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:maxHeight="300dp"
     tools:context=".classes.winetData.WinetDataFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +66,7 @@
                     android:layout_marginRight="0dp"
                     android:layout_weight="8"
                     android:ems="10"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:textSize="24sp" />
 
                 <ImageButton
@@ -180,7 +179,7 @@
                         android:id="@+id/apartmentList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="1dp"
                         android:padding="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

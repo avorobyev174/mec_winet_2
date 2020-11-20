@@ -8,6 +8,10 @@
         <item>402</item>
         <item>403</item>
     </string-array>
+    <string-array name="house_type_array">
+        <item>Дом</item>
+        <item>Свободная</item>
+    </string-array>
     <string-array name="apartment_type_array">
         <item>Физ. лицо</item>
         <item>Юр. лицо</item>

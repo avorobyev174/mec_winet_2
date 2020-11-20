@@ -6,6 +6,18 @@
     android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fragment_dialog_container2"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"/>
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/simpleDialogTitle"
         android:layout_width="match_parent"

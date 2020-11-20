@@ -99,7 +99,11 @@ public class WinetDataFragment extends EntityFragment implements View.OnClickLis
     }
 
     public void setSerNumber(String serNumber) {
-        this.serNumberInput.setText(serNumber);
+        serNumberInput.setText(serNumber);
+    }
+
+    public void setType(String type) {
+        winetTypeSpinner.setSelection(adapter.getPosition(type));
     }
 
     public static WinetDataFragment newInstance(ProgressBar mainProgressBar, FragmentManager myFragmentManager) {
@@ -147,8 +151,8 @@ public class WinetDataFragment extends EntityFragment implements View.OnClickLis
         winetTypeSpinner = view.findViewById(R.id.winetType);
         serNumberInput = view.findViewById(R.id.winetSerNumber);
         commentInput = view.findViewById(R.id.winetComment);
-        coordinateX = view.findViewById(R.id.winetCoordinateX);
-        coordinateY = view.findViewById(R.id.winetCoordinateY);
+        coordinateX = view.findViewById(R.id.coordinateXHouseCreateDialog);
+        coordinateY = view.findViewById(R.id.coordinateYHouseCreateDialog);
         barCodeButton = view.findViewById(R.id.barCodeButton);
         gpsButton = view.findViewById(R.id.gpsButton);
 

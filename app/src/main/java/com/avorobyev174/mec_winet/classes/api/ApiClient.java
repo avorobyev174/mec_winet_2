@@ -1,5 +1,6 @@
 package com.avorobyev174.mec_winet.classes.api;
 
+import com.avorobyev174.mec_winet.classes.object.api.CommonApi;
 import com.avorobyev174.mec_winet.classes.floor.api.FloorApi;
 import com.avorobyev174.mec_winet.classes.house.api.HousesApi;
 import com.avorobyev174.mec_winet.classes.meter.api.MeterApi;
@@ -62,5 +63,10 @@ public class ApiClient {
     public static MeterApi getMeterApi() {
         MeterApi meterApi = getRetrofit().create(MeterApi.class);
         return meterApi;
+    }
+
+    public static CommonApi getCommonApi() {
+        CommonApi commonApi = getRetrofit().create(CommonApi.class);
+        return commonApi;
     }
 }

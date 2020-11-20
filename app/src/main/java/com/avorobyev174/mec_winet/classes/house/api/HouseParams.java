@@ -11,6 +11,18 @@ public class HouseParams {
     @Expose
     private String houseNumber;
 
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("house_x")
+    @Expose
+    private String houseX;
+
+    @SerializedName("house_Y")
+    @Expose
+    private String houseY;
+
     public String getStreet() {
         return street;
     }
@@ -25,5 +37,29 @@ public class HouseParams {
 
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHouseX() {
+        return houseX;
+    }
+
+    public void setHouseX(String houseX) {
+        this.houseX = houseX;
+    }
+
+    public String getHouseY() {
+        return houseY;
+    }
+
+    public void setHouseY(String houseY) {
+        this.houseY = houseY;
     }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -92,16 +93,33 @@ public class MainActivity extends AppCompatActivity implements EntityFragment.fr
                     winetCreateDialog.setSerNumber(intentResult.getContents());
                 }
             } else if (getCurrentFragment() instanceof WinetDataFragment) {
-                ((WinetDataFragment)getCurrentFragment()).setSerNumber(intentResult.getContents());
+                String str = intentResult.getContents();
+                String type = "";
+                String serNumber = str;
+                if (str.contains("/")) {
+                    int index = str.indexOf("/");
+                    //Log.e("scan", String.valueOf(index));
+                    //Log.e("scan text", serNumber);
+                    serNumber = str.substring(index + 1);
+                    Log.e("scan serNumber", serNumber);
+                    type = str.substring(index - 3, index);
+                    Log.e("scan type", type);
+                    ((WinetDataFragment) getCurrentFragment()).setType(type);
+                    //Toast.makeText(getCurrentFragment().getContext(), "Серийный номер успешно считан", Toast.LENGTH_SHORT);
+                }
+
+                ((WinetDataFragment) getCurrentFragment()).setSerNumber(serNumber);
             } else if (getCurrentFragment() instanceof ApartmentFragment) {
                 MeterCreateDialog meterCreateDialog = ((ApartmentFragment)getCurrentFragment()).getCreateDialog();
                 if (meterCreateDialog != null) {
                     meterCreateDialog.setSerNumber(intentResult.getContents());
                 }
             }
-        } else if (getCurrentFragment() instanceof WinetDataFragment) {
-            ((MeterFragment) getCurrentFragment()).setSerNumber(intentResult.getContents());
+        } else  {
+            Toast.makeText(getApplicationContext(), "Ошибка при попытке сканирования штрих-кода", Toast.LENGTH_SHORT);
+            //((MeterFragment) getCurrentFragment()).setSerNumber(intentResult.getContents());
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

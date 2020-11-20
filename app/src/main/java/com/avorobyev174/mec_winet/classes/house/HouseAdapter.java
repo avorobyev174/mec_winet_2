@@ -59,7 +59,11 @@ public class HouseAdapter extends ArrayAdapter<House> {
             houseTitle = rootView.findViewById(R.id.list_item_title);
             deleteHouseButton = rootView.findViewById(R.id.winetDeleteItemButton);
 
-            houseTitle.setText(house.getFullStreetName());
+            if (house.getStreet() != null) {
+                houseTitle.setText(house.getFullStreetName());
+            } else {
+                houseTitle.setText(house.getName());
+            }
 
             deleteHouseButton.setOnTouchListener(new View.OnTouchListener() {
                 @Override

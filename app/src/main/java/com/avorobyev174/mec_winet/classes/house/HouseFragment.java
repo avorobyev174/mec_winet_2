@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 import com.avorobyev174.mec_winet.R;
 import com.avorobyev174.mec_winet.classes.api.ApiClient;
+import com.avorobyev174.mec_winet.classes.object.CommonObjFragment;
 import com.avorobyev174.mec_winet.classes.common.Entity;
 import com.avorobyev174.mec_winet.classes.common.EntityFragment;
 import com.avorobyev174.mec_winet.classes.house.api.HouseInfo;
 import com.avorobyev174.mec_winet.classes.house.api.HousesInfoResponse;
-import com.avorobyev174.mec_winet.classes.section.SectionFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class HouseFragment extends EntityFragment {
     private static FragmentManager fragmentManager;
     private HouseAdapter adapter;
     private List<House> houseList;
-    private fragmentShowListner fragmentShowListner;
+    private EntityFragment.fragmentShowListner fragmentShowListner;
 
     public HouseFragment() {
         // Required empty public constructor
@@ -64,6 +64,8 @@ public class HouseFragment extends EntityFragment {
 
     @Override
     public void showEntityCreateDialog() {
+//        SimpleDialog2 simpleDialog2 = new SimpleDialog2(getActivity(), null,  null, "Добавить", getChildFragmentManager(), HouseCreateDialogFragment.newInstance());
+//        simpleDialog2.show();
         HouseCreateDialog houseCreateDialog = new HouseCreateDialog(getActivity(), adapter,  houseList);
         houseCreateDialog.show();
     }
@@ -80,6 +82,7 @@ public class HouseFragment extends EntityFragment {
         fragmentShowListner = (fragmentShowListner) context;
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -87,6 +90,7 @@ public class HouseFragment extends EntityFragment {
         View view = inflater.inflate(R.layout.house_fragment, container, false);
         houseList = new ArrayList<>();
         ListView housesListView = view.findViewById(R.id.house_list_view);
+
         adapter = new HouseAdapter(view.getContext(), R.layout.simple_list_item_view, houseList, getLayoutInflater());
         housesListView.setAdapter(adapter);
 
@@ -97,10 +101,15 @@ public class HouseFragment extends EntityFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 House house = houseList.get(i);
-
-                EntityFragment entityFragment = SectionFragment.newInstance(progressBar, fragmentManager);
-
+                EntityFragment entityFragment = null;
                 Bundle bundle = new Bundle();
+
+                //if (!house.isCommonObj()) {
+                    //entityFragment = SectionFragment.newInstance(progressBar, fragmentManager);
+                //} else {
+                    entityFragment = CommonObjFragment.newInstance(progressBar, fragmentManager);
+                //}
+
                 bundle.putSerializable("entity", house);
                 entityFragment.setArguments(bundle);
 
@@ -121,7 +130,13 @@ public class HouseFragment extends EntityFragment {
                 Log.e("get house response", "success = " + response.body().getSuccess());
 
                 for (HouseInfo houseInfo : response.body().getResult()) {
-                    houseList.add(new House(houseInfo.getId(), houseInfo.getStreet(), houseInfo.getHouseNumber()));
+                    //houseList.add(new House(houseInfo.getId(), houseInfo.getStreet(), houseInfo.getHouseNumber()));
+
+                    if (houseInfo.getStreet() != null) {
+                        houseList.add(new House(houseInfo.getId(), houseInfo.getStreet(), houseInfo.getHouseNumber()));
+                    } else {
+                        houseList.add(new House(houseInfo.getId(), houseInfo.getName(), houseInfo.getHouseX(), houseInfo.getHouseY()));
+                    }
                 }
 
                 progressBar.setVisibility(ProgressBar.INVISIBLE);

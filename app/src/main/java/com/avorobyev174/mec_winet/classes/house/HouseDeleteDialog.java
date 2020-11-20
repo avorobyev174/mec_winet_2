@@ -52,7 +52,12 @@ public class HouseDeleteDialog extends Dialog {
         cancelDeleteHouseButton = findViewById(R.id.cancelDeleteDialogButton);
 
         houseDeleteTitle = findViewById(R.id.deleteDialogTitle);
-        houseDeleteTitle.setText("Вы хотите удалить дом \"" + house.getFullStreetName() + "\" ?");
+
+        if (house.getStreet() != null) {
+            houseDeleteTitle.setText("Вы хотите удалить дом \"" + house.getFullStreetName() + "\" ?");
+        } else {
+            houseDeleteTitle.setText("Вы хотите удалить объект \"" + house.getName() + "\" ?");
+        }
 
         cancelDeleteHouseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +79,13 @@ public class HouseDeleteDialog extends Dialog {
                         Log.e("delete", "sql " + response.body().getSql());
                         Log.e("delete", "result " + response.body().getSuccess());
 
+                        if (house.getStreet() != null) {
+                            Toast.makeText(getContext(), "Дом \"" + house.getFullStreetName() + "\" удален из списка", Toast.LENGTH_SHORT).show();
+                        } else  {
+                            Toast.makeText(getContext(), "Объект \"" + house.getName() + "\" удален из списка", Toast.LENGTH_SHORT).show();
+                        }
+
                         houseList.remove(house);
-                        Toast.makeText(getContext(), "Дом \"" + house.getFullStreetName() + "\" удален из списка", Toast.LENGTH_SHORT).show();
                         houseAdapter.notifyDataSetChanged();
                         dismiss();
                     }

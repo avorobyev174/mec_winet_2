@@ -17,6 +17,7 @@ import com.avorobyev174.mec_winet.classes.floor.Floor;
 import com.avorobyev174.mec_winet.classes.floor.FloorFragment;
 import com.avorobyev174.mec_winet.classes.house.House;
 import com.avorobyev174.mec_winet.classes.meter.Meter;
+import com.avorobyev174.mec_winet.classes.object.CommonObj;
 import com.avorobyev174.mec_winet.classes.section.Section;
 import com.avorobyev174.mec_winet.classes.vestibule.Vestibule;
 import com.avorobyev174.mec_winet.classes.winet.Winet;
@@ -91,12 +92,31 @@ public class InfoBar {
             //список подьездов
             House house = (House) entity;
 
-            houseTextView.setText(house.getFullStreetName());
+            if (house.isCommonObj()) {
+                houseTextView.setText(house.getName());
+            } else {
+                houseTextView.setText(house.getFullStreetName());
+            }
+
             setOnClickListenerForTextView(houseTextView, null);
 
             saveItemView.setVisibility(View.GONE);
             backItemView.setVisibility(View.VISIBLE);
-        } else if (entity.getClass().equals(Section.class)) {
+        } else if (entity.getClass().equals(CommonObj.class)) {
+            //список объектов
+            CommonObj obj = (CommonObj) entity;
+
+            if (obj.getHouse() != null) {
+                houseTextView.setText(obj.getHouse().getName());
+            }
+
+            //houseTextView.setText(house.getFullStreetName());
+
+            setOnClickListenerForTextView(houseTextView, null);
+
+            saveItemView.setVisibility(View.GONE);
+            backItemView.setVisibility(View.VISIBLE);
+        }else if (entity.getClass().equals(Section.class)) {
             //список этажей
             Section section = (Section) entity;
 

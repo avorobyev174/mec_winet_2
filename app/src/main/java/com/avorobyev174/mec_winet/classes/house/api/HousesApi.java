@@ -13,7 +13,12 @@ public interface HousesApi {
     Call<HousesInfoResponse> getHouses();
 
     @POST("house/?485kf9056kjwj3=04jf75h@hjfks")
-    Call<HouseResponseWithParams> createHouse(@Query("street") String street, @Query("house_number") String houseNumber);
+    Call<HouseResponseWithParams> createHouse(@Query("street") String street,
+                                              @Query("house_number") String houseNumber,
+                                              @Query("name") String name,
+                                              @Query("house_x") String houseX,
+                                              @Query("house_y") String houseY
+                                             );
 
     @DELETE("mobile_redirect.php?485kf9056kjwj3=04jf75h@hjfks")
     Call<SimpleResponse> deleteHouse(@Query("_type") String entity, @Query("_id") int houseId);
